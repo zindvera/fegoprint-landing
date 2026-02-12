@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>About FegoPrint</title>
+        <link rel="icon" type="image/png" sizes="32x32" href="media/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="media/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="media/favicon/favicon-180x180.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link rel="stylesheet" href="footer.css">
+    <script src="footer.js" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .page-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.25rem 3rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1.25rem;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            margin-top: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 0.55rem;
+        }
+
+        .switch-links {
+            margin-top: 0.75rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .switch-links a {
+            margin: 0 0.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.25rem 0.9rem;
+            border-radius: 999px;
+            color: #0d6efd;
+        }
+
+        .switch-links a.active {
+            background-color: #0d6efd;
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navdiv"></div>
+
+    <div class="page-wrapper" style="margin-top:1in;">
+        <h1>About FegoPrint</h1>
+
+        <div class="switch-links text-center">
+            <a href="#" id="link-customers" class="active">For Customers</a>
+            <a href="#" id="link-sellers">For Seller</a>
+        </div>
+
+        <!-- For Customers -->
+        <div id="section-customers">
+            <h2>For Customers</h2>
+            <p>FegoPrint is a visual preview website that helps you understand how a product will actually look before
+                you decide to buy it on an external store.</p>
+
+            <br>
+            <h3>For wall art</h3>
+            <p>Use a live camera preview to place the wall art on your own wall and adjust the position.</p>
+
+            <p>View the product in different room scenes (such as bedroom or living room) to see how it fits various
+                interiors.</p>
+            <p>Change the wall colour behind the frame to see how it looks on light, dark or coloured walls.</p>
+
+            <br>
+            <h3>For stickers</h3>
+            <p>Use a live camera preview to position the sticker on real objects around you and check size and
+                placement.</p>
+
+            <p>See the sticker on different device types and colours, such as laptops, tablets or other surfaces.</p>
+
+            <br>
+            <h3>Buying the product</h3>
+            <p>After exploring these previews, you click the “Buy” button and complete the purchase on an external store
+                like Amazon, Redbubble or another seller website.</p>
+            <br>
+
+
+            <h3>Other products (future extension)</h3>
+            <p>Right now FegoPrint focuses on wall art, stickers and wall decor, but the same preview tools are built to
+                support more product types in the future.</p>
+            <p>Any product that benefits from clearer visual presentation in different environments or on different
+                devices can be added later, using a mix of static mockups, colour options and live camera previews.</p>
+
+
+
+        </div>
+
+        <!-- For Seller -->
+        <div id="section-sellers" style="display:none;">
+            <h2>For Seller (Product Owners)</h2>
+            <p>
+                FegoPrint is a presentation tool that helps you show how your products will look in a customer's chosen
+                environment,
+                so customers can see this before they visit your external store to buy.
+            </p>
+
+            <br>
+            <h3>For wall art</h3>
+            <p>Let customers use a live camera preview to place your artwork on their own wall and move it around.</p>
+
+            <p>Present each wall art product in multiple room scenes to match different interior styles and moods.</p>
+            <p>Offer wall colour options so visitors can test how your wall art looks on light, dark or coloured walls.
+            </p>
+            <br>
+            <h3>For stickers</h3>
+            <p>Allow customers to use a live camera preview to position your sticker on their own items and judge size,
+                placement and overall fit.</p>
+            <p>Display your stickers on different device types and colours, such as laptops, tablets or other objects,
+                so customers can see how they match real devices.</p>
+
+            <br>
+            <h3>External “Buy” button</h3>
+            <p>Each product page on FegoPrint includes a “Buy” button that links directly to your existing store, such
+                as Amazon, Redbubble or your own website.</p>
+            <p>FegoPrint does not handle checkout or shipping; it focuses on improving how your products are visually
+                presented before purchase.</p>
+
+
+            <br>
+            <h3>Other products (future extension)</h3>
+            <p>At present FegoPrint focuses on wall art, stickers and wall decor, but the same system is designed to
+                support more product categories over time.</p>
+            <p>You will be able to attach your products to new mockup types and visual options whenever additional
+                product categories are added.</p>
+
+        </div>
+    </div>
+
+
+
+
+    <script src="nav.js"></script>
+    <script>
+        const linkCustomers = document.getElementById('link-customers');
+        const linkSellers = document.getElementById('link-sellers');
+        const sectionCustomers = document.getElementById('section-customers');
+        const sectionSellers = document.getElementById('section-sellers');
+
+        linkCustomers.addEventListener('click', function (e) {
+            e.preventDefault();
+            linkCustomers.classList.add('active');
+            linkSellers.classList.remove('active');
+            sectionCustomers.style.display = 'block';
+            sectionSellers.style.display = 'none';
+        });
+
+        linkSellers.addEventListener('click', function (e) {
+            e.preventDefault();
+            linkSellers.classList.add('active');
+            linkCustomers.classList.remove('active');
+            sectionSellers.style.display = 'block';
+            sectionCustomers.style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Landing Page</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="media/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="media/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="media/favicon/favicon-180x180.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .image-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+
+        .cta-button {
+            background-color: #a73fc7;
+            /* Light violet */
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .cta-button:active {
+            background-color: #e660c4;
+            /* Light pink */
+            color: #ffffff;
+        }
+
+        #index-logo {
+            height: 60px;
+        }
+
+
+        #loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loader {
+            border: 6px solid #cce4ff;
+            /* Light blue background */
+            border-top: 6px solid #007bff;
+            /* Blue spinner color */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Phone view: for screen widths up to 767px (small devices) */
+        @media (max-width: 767px) {
+
+            #index-logo {
+                height: 40px;
+            }
+        }
+
+        /* Tablet view: for screen widths between 768px and 1023px */
+        @media (min-width: 768px) and (max-width: 1023px) {}
+
+        /* Desktop view: for screen widths 1024px and above */
+        @media (min-width: 1024px) {}
+    </style>
+</head>
+
+<body>
+
+    <div id="loader-overlay">
+        <div class="loader"></div>
+    </div>
+
+
+    <div class="container py-3 fixed-nav">
+        <div class="d-flex justify-content-center">
+            <img id="index-logo" src="media/logo/fegoprint.png" alt="Fegoprint Brand Logo" />
+        </div>
+    </div>
+
+
+    <div class="navdiv"></div>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-10 col-md-10 col-12 mx-auto">
+                <!-- Repeat this segment 4 times -->
+                <div class="mb-4 ">
+                    <h4 class="mb-3" style="margin-top: 0.35in;">Custom Wall Deco</h4>
+
+                    <div class="image-scroll">
+                        <a href="/product/wall-text/custom/index.html">
+                            <div class="d-flex">
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 1" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 2" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 3" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 4" />
+                            </div>
+                        </a>
+                    </div>
+                    <div class="text-center mt-2">
+                        <a href="/product/wall-text/custom/index.html" class="cta-button">Explore</a>
+                    </div>
+
+                </div>
+
+                          <div class="mb-4">
+                    <h4 class="mb-3" style="margin-top: 0.35in;">Premade Wall Deco</h4>
+                    <div class="image-scroll">
+                        <a href="/product/wall-text/pre-made/index.html">
+                            <div class="d-flex">
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 1" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 2" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 3" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 4" />
+                            </div>
+
+                        </a>
+
+                    </div>
+                    <div class="text-center mt-2">
+                        <a href="/product/wall-text/pre-made/index.html" class="cta-button">Explore</a>
+                    </div>
+                </div>
+
+
+
+                <div class="mb-4 ">
+                    <h4 class="mb-3" style="margin-top: 0.35in;">Custom Wall Art</h4>
+
+                    <div class="image-scroll">
+                        <a href="/product/wall-art/custom/index.html">
+                            <div class="d-flex">
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 1" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 2" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 3" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 4" />
+                            </div>
+                        </a>
+                    </div>
+                    <div class="text-center mt-2">
+                        <a href="/product/wall-art/custom/index.html" class="cta-button">Explore</a>
+                    </div>
+
+                </div>
+
+
+
+      
+
+                <div class="mb-4">
+                    <h4 class="mb-3" style="margin-top: 0.35in;">Premade Wall Art</h4>
+                    <div class="image-scroll">
+                        <a href="/product/wall-art/pre-made/index.html">
+                            <div class="d-flex">
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 1" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 2" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 3" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 4" />
+                            </div>
+
+                        </a>
+
+                    </div>
+                    <div class="text-center mt-2">
+                        <a href="/product/wall-art/pre-made/index.html" class="cta-button">Explore</a>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h4 class="mb-3" style="margin-top: 0.35in;">Stickers</h4>
+                    <div class="image-scroll">
+                        <a href="/product/stickers/pre-made/index.html">
+                            <div class="d-flex">
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 1" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 2" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 3" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 4" />
+                            </div>
+                        </a>
+
+                    </div>
+                    <div class="text-center mt-2">
+                        <a href="/product/stickers/pre-made/index.html" class="cta-button">Explore</a>
+                    </div>
+                </div>
+
+                     <div class="mb-4">
+                    <h4 class="mb-3" style="margin-top: 0.35in;">Ebooks</h4>
+                    <div class="image-scroll">
+                        <a href="/product/ebook/">
+                            <div class="d-flex">
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 1" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 2" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 3" />
+                                <img src="placeholder.png" class="img-fluid mx-2 my-1" alt="Image 4" />
+                            </div>
+                        </a>
+
+                    </div>
+                    <div class="text-center mt-2">
+                        <a href="/product/ebook/" class="cta-button">Explore</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <footer
+        style="margin-top: 1.5in; padding: 1.25rem 0; text-align: center; font-size: 0.9rem; color: #4b5563; background: linear-gradient(90deg,#e7f7ec,#f3f4f6); border-top: 1px solid #d1d5db;">
+        <div style="max-width: 900px; margin: 0 auto; padding: 0 1rem;">
+            <p style="margin: 0 0 0.25rem 0;">&copy; 2025 FegoPrint. All rights reserved.</p>
+            <p style="margin: 0;">
+                <a href="about.html" style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">About</a>
+                <span style="color:#9ca3af;">|</span>
+                <a href="privacy.html" style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Privacy</a>
+                <span style="color:#9ca3af;">|</span>
+                <a href="terms.html" style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Terms</a>
+                <span style="color:#9ca3af;">|</span>
+                <a href="cookies.html" style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Cookies</a>
+                <span style="color:#9ca3af;">|</span>
+                <a href="contact.html" style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Contact</a>
+            </p>
+        </div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="nav.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader-overlay');
+            if (loader) {
+                loader.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const staticSearch = document.querySelector('.fixed-nav');
+            const scrollSearch = document.querySelector('.scroll-nav');
+
+            function checkStaticSearchVisibility() {
+                const rect = staticSearch.getBoundingClientRect();
+                // If static-search is fully above viewport or partially out of view at top
+                if (rect.bottom < 0) {
+                    scrollSearch.style.display = 'block';
+                } else {
+                    scrollSearch.style.display = 'none';
+                }
+            }
+
+            window.addEventListener('scroll', checkStaticSearchVisibility);
+            checkStaticSearchVisibility(); // init on page load
+        });
+
+    </script>
+</body>
+
+</html>

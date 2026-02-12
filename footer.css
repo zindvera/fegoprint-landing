@@ -1,0 +1,43 @@
+/* style.css */
+:root {
+    --brand-blue: #2563eb; /* Adjust this to your specific FegoPrint blue */
+}
+
+.main-footer {
+    margin-top: 1in;
+    padding: 3rem 0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #4b5563;
+    background: #fff;
+    border-top: 1px solid #eee;
+}
+
+.footer-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.footer-copyright {
+    margin: 0 0 1rem 0;
+    font-weight: 600;
+}
+
+.footer-links p {
+    margin: 0;
+}
+
+.footer-links a {
+    color: var(--brand-blue);
+    text-decoration: none;
+    margin: 0 0.75rem;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.footer-divider {
+    color: #e5e7eb;
+}

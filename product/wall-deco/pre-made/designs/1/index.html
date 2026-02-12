@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wall Name Sticker Design</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../../../media/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../../../../media/favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../../../media/favicon/favicon-180x180.png">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #fafafa;
+    }
+
+    /* Top header: container with col-lg-6 col-md-8 col-12 mx-auto */
+    .top-header-wrapper {
+      max-width: 100%;
+      padding-left: 15px;
+      padding-right: 15px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (min-width: 992px) {
+      .top-header-wrapper {
+        max-width: 720px;
+        /* col-lg-6 */
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 991.98px) {
+      .top-header-wrapper {
+        max-width: 600px;
+        /* col-md-8 */
+      }
+    }
+
+    .top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 1rem;
+      margin: 0 auto;
+      flex-wrap: nowrap;
+      /* default row */
+    }
+
+    /* Mobile: stack sticker on top, button below with margin */
+    @media (max-width: 767.98px) {
+      .top-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .btn-amazon {
+        margin-top: 1rem;
+        /* space above button */
+      }
+    }
+
+    .sticker-logo {
+      height: 60px;
+      width: auto;
+    }
+
+    #loader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .loader {
+       border: 6px solid #b6fad5;
+      /* Light blue background */
+      border-top: 6px solid #01ce7f;
+      /* Blue spinner color */
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Amazon style button */
+    .btn-amazon {
+      background-color: #FF9900;
+      color: white;
+      border-radius: 5px;
+      font-weight: 600;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+      border: none;
+      text-decoration: none;
+      display: inline-block;
+      cursor: pointer;
+      text-align: center;
+      transition: background-color 0.3s ease;
+      padding: 12px 32px;
+      font-size: 1.5rem;
+      /* large font */
+    }
+
+    @media (max-width: 767.98px) {
+      .btn-amazon {
+        padding: 8px 20px;
+        font-size: 1.1rem;
+      }
+    }
+
+    /* Existing grid styles */
+    .grid-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Mobile vertical margin between images */
+    @media (max-width: 767.98px) {
+      .grid-item {
+        margin-bottom: 0.5in;
+      }
+    }
+
+    /* Floating button */
+    .float-btn {
+      position: fixed;
+      z-index: 1050;
+      display: none;
+      /* hidden by default */
+      /* Glow animation */
+      animation: glowing-yellow 2.5s infinite alternate;
+      box-shadow: 0 0 10px 2px #FFDD55;
+    }
+
+    @media (min-width: 768px) {
+      .float-btn {
+        bottom: 20px;
+        right: 20px;
+        width: auto;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .float-btn {
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 40px);
+        text-align: center;
+        /* Removed display:none here for JS control */
+      }
+    }
+
+    /* Keyframes for yellow glowing effect */
+    @keyframes glowing-yellow {
+      0% {
+        box-shadow: 0 0 5px 2px #FFD54F;
+        background-color: #FF9900;
+      }
+
+      50% {
+        box-shadow: 0 0 15px 6px #FFEB3B;
+        background-color: #FFB300;
+      }
+
+      100% {
+        box-shadow: 0 0 5px 2px #FFD54F;
+        background-color: #FF9900;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loader-overlay">
+    <div class="loader"></div>
+  </div>
+  <div class="navdiv" style="margin-bottom: 0.6in;"></div>
+  <!-- Top section: constrained container with sticker and CTA -->
+  <div class="top-header-wrapper">
+    <div class="top-header">
+      <img src="path_to_your_transparent_sticker.png" alt="Sticker Logo" class="sticker-logo" />
+      <a id="topCta" href="https://www.amazon.com/dp/your-product-ASIN" target="_blank" rel="noopener noreferrer"
+        class="btn-amazon">
+        Customize on Amazon &#8594;
+      </a>
+    </div>
+  </div>
+
+  <!-- Preview Images Section -->
+  <div class="container-fluid px-md-3 px-0 mt-4">
+    <div id="imageGrid" class="row g-md-3 g-0"></div>
+  </div>
+
+  <!-- Floating CTA Button during scroll -->
+  <a id="floatCta" href="https://www.amazon.com/dp/your-product-ASIN" target="_blank" rel="noopener noreferrer"
+    class="btn-amazon float-btn">
+    Customize on Amazon &#8594;
+  </a>
+
+  <footer
+    style="margin-top: 1.5in; padding: 1.25rem 0; text-align: center; font-size: 0.9rem; color: #4b5563; background: linear-gradient(90deg,#e7f7ec,#f3f4f6); border-top: 1px solid #d1d5db;">
+    <div style="max-width: 900px; margin: 0 auto; padding: 0 1rem;">
+      <p style="margin: 0 0 0.25rem 0;">&copy; 2025 FegoPrint. All rights reserved.</p>
+      <p style="margin: 0;">
+        <a href="../../../../../about.html" style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">About</a>
+        <span style="color:#9ca3af;">|</span>
+        <a href="../../../../../privacy.html"
+          style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Privacy</a>
+        <span style="color:#9ca3af;">|</span>
+        <a href="../../../../../terms.html" style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Terms</a>
+        <span style="color:#9ca3af;">|</span>
+        <a href="../../../../../cookies.html"
+          style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Cookies</a>
+        <span style="color:#9ca3af;">|</span>
+        <a href="../../../../../contact.html"
+          style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Contact</a>
+      </p>
+    </div>
+  </footer>
+
+
+  <script src="../../../../../nav.js"></script>
+  <script>
+    async function imageExists(url) {
+      try {
+        const res = await fetch(url, { method: 'HEAD' });
+        return res.ok;
+      } catch {
+        return false;
+      }
+    }
+
+    async function loadImages() {
+      const extensions = ['png', 'jpg', 'webp'];
+      const grid = document.getElementById('imageGrid');
+      let index = 1;
+      while (true) {
+        let imgPath = null;
+        for (const ext of extensions) {
+          const path = `images/preview-lg-${index}.${ext}`;
+          const exists = await imageExists(path);
+          if (exists) {
+            imgPath = path;
+            break;
+          }
+        }
+        if (!imgPath) break;
+
+        const colDiv = document.createElement('div');
+        colDiv.className = 'col-12 col-md-6';
+
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'grid-item';
+
+        const img = document.createElement('img');
+        img.src = imgPath;
+        img.alt = `Preview Image ${index}`;
+
+        itemDiv.appendChild(img);
+        colDiv.appendChild(itemDiv);
+        grid.appendChild(colDiv);
+
+        index++;
+      }
+    }
+
+    loadImages();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const topCta = document.getElementById('topCta');
+      const floatCta = document.getElementById('floatCta');
+
+      if (!topCta || !floatCta) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              floatCta.style.display = 'none';
+            } else {
+              floatCta.style.display = 'block';
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      observer.observe(topCta);
+    });
+
+
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('loader-overlay');
+      if (loader) {
+        loader.style.display = 'none';
+      }
+    });
+  </script>
+
+  <!-- Bootstrap js bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

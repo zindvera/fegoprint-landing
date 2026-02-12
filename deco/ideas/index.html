@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loading...</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+
+  <style>
+    /* Base styles (mobile-first) */
+    :root {
+      --color-primary: #4f46e5;
+      --color-primary-hover: #6366f1;
+      --color-amazon: #10b981;
+      --color-redbubble: #ef4444;
+      --color-dark: #1f2937;
+      --color-medium: #4b5563;
+      --color-light-bg: #f7f9fb;
+      --color-card-bg: #f9fafb;
+    }
+
+    body {
+      background-color: var(--color-light-bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--color-dark);
+      line-height: 1.5;
+      padding: 0.3rem;
+    }
+
+    .container-wrapper {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    .container-wrapper>*+* {
+      margin-top: 2.5rem;
+    }
+
+    /* Product list layout - mobile default */
+    .main-product-list {
+      display: block;
+      margin-top: 2.5rem;
+    }
+
+    .main-product-list>.product-item+.product-item {
+      margin-top: 2rem;
+    }
+
+    .header {
+      font-size: 1.875rem;
+      font-weight: 700;
+      text-align: center;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 1rem;
+    }
+
+    /* Product grid - mobile default (2 columns) */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .product-item {
+      background-color: white;
+      border-radius: 0.75rem;
+      box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -4px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .main-image-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .square-image {
+      width: 100%;
+      padding-top: 100%;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .button-row {
+      padding: 0.5rem 1rem;
+      background-color: transparent;
+      overflow: hidden;
+    }
+
+    .toggle-button {
+      float: right;
+      width: 50%;
+      background: linear-gradient(to left, #e0f7ff, white);
+      color: var(--color-primary);
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -2px rgba(0, 0, 0, 0.06);
+      border: none;
+      transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .toggle-button:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow:
+        0 6px 8px -1px rgba(0, 0, 0, 0.15),
+        0 4px 6px -2px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Collapsible content */
+    .collapsible-content {
+      transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+      max-height: 0;
+      overflow: hidden;
+      padding-top: 0;
+      padding-bottom: 0;
+      background-color: var(--color-card-bg);
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .collapsible-content.expanded {
+      max-height: 1000px;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    .grid-header {
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-medium);
+    }
+
+    /* Product card */
+    .product-card {
+      background-color: white;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      position: relative;
+      padding-bottom: 2.25rem;
+      box-shadow: none;
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      text-decoration: none;
+      /* for <a> card */
+      color: inherit;
+    }
+
+    .product-card:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -2px rgba(0, 0, 0, 0.06);
+    }
+
+    .product-card img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 0.375rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-name {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--color-medium);
+      margin-bottom: 0.25rem;
+      text-align: left;
+    }
+
+    .platform-tag {
+      position: absolute;
+      right: 0.75rem;
+      bottom: 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .platform-amazon {
+      color: var(--color-amazon);
+    }
+
+    .platform-redbubble {
+      color: var(--color-redbubble);
+    }
+
+    /* Coach mark base */
+    #coach-mark {
+      display: none;
+      position: absolute;
+      background-color: #bae0ff;
+      color: var(--color-dark);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      width: 200px;
+      z-index: 1000;
+      font-size: 0.875rem;
+      text-align: left;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    #coach-mark.show {
+      display: block;
+      opacity: 1;
+    }
+
+    #coach-mark:after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      right: 1rem;
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid #bae0ff;
+    }
+
+    .coach-mark-text {
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+
+    .coach-mark-header {
+      overflow: hidden;
+    }
+
+    .coach-mark-close {
+      float: right;
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: var(--color-dark);
+      padding: 0;
+      line-height: 1;
+    }
+
+    .coach-mark-understand {
+      float: right;
+      background-color: var(--color-primary);
+      color: white;
+      padding: 0.35rem 0.85rem;
+      border-radius: 0.375rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+
+    .coach-mark-understand:hover {
+      background-color: var(--color-primary-hover);
+    }
+
+    /* Tablet styles (≥ 768px) */
+    @media (min-width: 768px) {
+      body {
+        padding: 2rem;
+      }
+
+      .container-wrapper {
+        max-width: 100%;
+      }
+
+      .main-product-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 3.5rem;
+        row-gap: 2rem;
+        margin-top: 3.5rem;
+        align-items: start;
+        /* do NOT stretch cards vertically */
+      }
+
+      .main-product-list>.product-item+.product-item {
+        margin-top: 0;
+        /* grid gap handles spacing */
+      }
+
+      /* Keep product grid at 2 columns on tablet */
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Desktop styles (≥ 1024px) */
+    @media (min-width: 1024px) {
+      body {
+        padding: 3rem;
+      }
+
+      .main-product-list {
+        column-gap: 4rem;
+        row-gap: 2.25rem;
+        margin-top: 3.5rem;
+      }
+
+      /* Still 2 columns for product-grid; adjust here if you want more */
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+
+
+</head>
+
+<body>
+  <div class="container-wrapper">
+    <h1 class="header">Loading...</h1>
+
+    <div id="coach-mark">
+      <div class="coach-mark-header">
+        <button class="coach-mark-close" onclick="dismissCoachMark(true)">×</button>
+      </div>
+      <p class="coach-mark-text">From here, you can view the specific items used in the image.</p>
+      <button class="coach-mark-understand" onclick="dismissCoachMark(true)">Got It</button>
+    </div>
+
+    <div class="main-product-list">
+      <!-- Dynamic content will be injected here -->
+    </div>
+  </div>
+
+
+  <script>
+    function getBlogId() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('blog');
+    }
+
+    async function loadBlogData(blogId) {
+      try {
+
+        const response = await fetch(`data/${blogId}/data.json`);
+
+
+        if (!response.ok) throw new Error('Folder or JSON not found');
+
+        const raw = await response.json();
+
+
+        // IMPORTANT: if your JSON is an array like: [ { title, ideas } ]
+        const data = Array.isArray(raw) ? raw[0] : raw;
+
+
+        return data;
+      } catch (error) {
+
+        return null;
+      }
+    }
+
+    function generateProductItem(idea, ideaIndex, blogId) {
+
+      const productHtml = (idea.products || []).map(product => `
+  <a class="product-card"
+     href="${product.url}"
+     target="_blank"
+     rel="noopener noreferrer">
+    <img src="data/${blogId}/media/${product.image}" alt="${product.name}" loading="lazy">
+    <p class="product-name">${product.name}</p>
+    <p class="platform-tag platform-${(product.platform || '').toLowerCase()}">
+      ${product.platform}
+    </p>
+  </a>
+`).join('');
+
+
+      return `
+      <div id="product-${ideaIndex + 1}" class="product-item">
+        <div class="main-image-wrapper">
+          <div class="square-image" style="background-image: url('data/${blogId}/media/${idea.image}')"></div>
+        </div>
+        <div class="button-row">
+          <button data-target="collapse-${ideaIndex + 1}" onclick="toggleItems(this)" class="toggle-button">
+            Items Used <span class="toggle-icon">▼</span>
+          </button>
+        </div>
+        <div id="collapse-${ideaIndex + 1}" class="collapsible-content">
+          <p class="grid-header">${idea.products.length} Featured Products:</p>
+          <div class="product-grid">${productHtml}</div>
+        </div>
+      </div>
+    `;
+    }
+
+    async function initDynamicPage() {
+      const blogId = getBlogId();
+
+
+      if (!blogId) {
+        document.querySelector('.header').textContent = 'No blog ID provided (?blog=1)';
+        document.title = 'No blog ID provided';
+        return;
+      }
+
+      const data = await loadBlogData(blogId);
+
+
+      if (!data) {
+        document.querySelector('.header').textContent = 'Blog not found';
+        document.title = 'Blog not found';
+        return;
+      }
+
+      // title + H1
+      document.title = data.title;
+      document.querySelector('.header').textContent = data.title;
+
+      // build list
+      const productList = (data.ideas || []).map((idea, index) =>
+        generateProductItem(idea, index, blogId)
+      ).join('');
+      document.querySelector('.main-product-list').innerHTML = productList;
+
+      // intersection observer
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const contentDiv = entry.target;
+          if (!entry.isIntersecting && contentDiv.classList.contains('expanded')) {
+            const button = getButtonByTargetId(contentDiv.id);
+            if (button) toggleItems(button);
+          }
+        });
+      }, { root: null, rootMargin: "0px", threshold: 0 });
+
+      document.querySelectorAll('.collapsible-content').forEach(element => {
+        observer.observe(element);
+      });
+
+
+    }
+
+    // keep your existing getButtonByTargetId, toggleItems, dismissCoachMark, initCoachMark...
+
+    window.addEventListener('load', initDynamicPage);
+
+    function getButtonByTargetId(targetId) {
+      return document.querySelector(`[data-target="${targetId}"]`);
+    }
+
+
+    function toggleItems(button) {
+      const targetId = button.getAttribute('data-target');
+      const targetElement = document.getElementById(targetId);
+      if (!targetElement) return;
+
+      const isExpanded = targetElement.classList.toggle('expanded');
+
+      if (isExpanded) {
+        button.innerHTML = 'Hide Items <span class="toggle-icon">▲</span>';
+      } else {
+        button.innerHTML = 'Items Used <span class="toggle-icon">▼</span>';
+      }
+    }
+
+
+  </script>
+
+
+</body>
+
+</html>

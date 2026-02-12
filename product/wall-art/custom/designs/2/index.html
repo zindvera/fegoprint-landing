@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 Vision Board | Customize on Zazzle</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #000;
+            background-color: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Floating Button - Positioned Bottom Right */
+        .sticky-cta {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1050;
+            width: auto;
+            max-width: 320px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .sticky-cta-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(30px);
+        }
+
+        .sticky-cta-visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .btn-black {
+            background-color: #000;
+            color: #fff;
+            border-radius: 8px;
+            font-weight: 700;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .btn-black:hover {
+            background-color: #27272a;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.05em;
+        }
+
+        /* Normal casing black text for tagline */
+        .tagline {
+            font-size: 20px;
+            font-weight: 600;
+            color: #000;
+            text-transform: none;
+            letter-spacing: 0;
+            display: block;
+            padding-bottom: 0.35in;
+        }
+
+        .tagline-muted {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #a1a1aa;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .aspect-vision {
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background-color: #000;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* --- Separate Device Queries --- */
+
+        /* 1. Phone (Portrait and Landscape) */
+        @media (max-width: 767px) {
+            h1 {
+                font-size: 2.25rem !important;
+            }
+
+            .section-padding {
+                padding: 60px 0;
+            }
+
+            .what-you-get-text {
+                font-size: 1.25rem;
+            }
+
+            .step-text {
+                font-size: 1.25rem;
+            }
+
+            .example-card {
+                margin-bottom: 2rem;
+            }
+
+            .sticky-cta {
+                right: 20px;
+                left: 20px;
+                max-width: none;
+            }
+        }
+
+        /* 2. Tablet */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            h1 {
+                font-size: 2.75rem !important;
+            }
+
+            .section-padding {
+                padding: 80px 0;
+            }
+
+            .what-you-get-text {
+                font-size: 1.5rem;
+            }
+
+            .step-text {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* 3. Laptop / Desktop */
+        @media (min-width: 1024px) {
+            h1 {
+                font-size: 3rem !important;
+            }
+
+            .section-padding {
+                padding: 100px 0;
+            }
+
+            .what-you-get-text {
+                font-size: 1.75rem;
+            }
+
+            .step-text {
+                font-size: 1.75rem;
+            }
+
+            .container-custom {
+                max-width: 1140px;
+            }
+        }
+
+        .header-border {
+            border-bottom: 1px solid #f4f4f5;
+        }
+
+        .footer-border {
+            border-top: 1px solid #f4f4f5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Floating Right-Bottom CTA (Scroll Triggered) -->
+    <div id="sticky-cta" class="sticky-cta sticky-cta-hidden">
+        <a href="#" class="btn-black w-100 text-center shadow-lg">
+            Customize this Vision Board
+        </a>
+    </div>
+
+    <div class="navdiv" style="margin-bottom: 0.6in;"></div>
+
+    <!-- Hero -->
+    <header class="container-custom mx-auto px-4 py-5 header-border">
+        <div class="row align-items-center g-5">
+            <div class="col-12 col-md-6 order-2 order-md-1">
+                <div class="aspect-vision shadow-sm">
+                    <img src="https://placehold.co/600x600/e2e8f0/64748b?text=Main+Vision+Board+Mockup"
+                        alt="Vision Board Mockup">
+                </div>
+            </div>
+            <div class="col-12 col-md-6 order-1 order-md-2">
+                <h1 class="fw-bold tracking-tight mb-4">Design your 2025 vision board in minutes.</h1>
+                <p class="lead text-secondary mb-5">Change layout, photos, affirmations and size in Zazzle’s easy editor
+                    – no design skills needed.</p>
+                <div id="main-cta-trigger">
+                    <a href="#" class="btn-black px-5">
+                        Customize this Vision Board
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Examples -->
+    <section class="container-custom mx-auto px-4 section-padding">
+        <div class="mb-5 text-center">
+            <span class="tagline">Edit as per your choice</span>
+            <h2 class="fw-bold h1">For Example</h2>
+        </div>
+
+        <div class="row g-4 pb-5 border-bottom">
+            <!-- Tile 1 -->
+            <div class="col-12 col-md-4 example-card text-center text-md-start">
+                <div class="aspect-vision mb-3">
+                    <img src="https://placehold.co/400x500/f1f5f9/94a3b8?text=Layout+Variation" alt="Layout Example"
+                        class="w-100 h-100 object-fit-cover">
+                </div>
+                <p class="small fw-medium">
+                    <strong class="d-block mb-1">Layout Variation</strong>
+                    Swap photos & rearrange the collage layout.
+                </p>
+            </div>
+
+            <!-- Tile 2 -->
+            <div class="col-12 col-md-4 example-card text-center text-md-start">
+                <div class="aspect-vision mb-3">
+                    <img src="https://placehold.co/400x500/f1f5f9/94a3b8?text=Size+Comparison" alt="Size Example"
+                        class="w-100 h-100 object-fit-cover">
+                </div>
+                <p class="small fw-medium">
+                    <strong class="d-block mb-1">Size Variation</strong>
+                    Choose the poster size that fits your space.
+                </p>
+            </div>
+
+            <!-- Tile 3 -->
+            <div class="col-12 col-md-4 example-card text-center text-md-start">
+                <div class="aspect-vision mb-3">
+                    <img src="https://placehold.co/400x500/f1f5f9/94a3b8?text=Custom+Affirmations" alt="Text Example"
+                        class="w-100 h-100 object-fit-cover">
+                </div>
+                <p class="small fw-medium">
+                    <strong class="d-block mb-1">Text Variation</strong>
+                    Rewrite every affirmation in your own words.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Sections -->
+    <main class="container mx-auto px-4 pb-5" style="max-width: 800px;">
+
+        <!-- What you get -->
+        <section class="mb-5 py-5 border-bottom">
+            <h2 class="display-6 fw-bold mb-5">What you get.</h2>
+            <ul class="list-unstyled">
+                <li class="d-flex gap-4 mb-4 what-you-get-text">
+                    <span class="fw-bold text-black">•</span>
+                    <span>High-quality printed poster fulfilled and shipped by Zazzle.</span>
+                </li>
+                <li class="d-flex gap-4 mb-4 what-you-get-text">
+                    <span class="fw-bold text-black">•</span>
+                    <span>Multiple sizes and paper finishes to match your space and budget.</span>
+                </li>
+                <li class="d-flex gap-4 mb-4 what-you-get-text">
+                    <span class="fw-bold text-black">•</span>
+                    <span>Simple online editor to customize text and photos before ordering.</span>
+                </li>
+            </ul>
+            <div class="mt-5 tagline-muted d-flex align-items-center gap-2">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z">
+                    </path>
+                </svg>
+                Secure checkout & global shipping via Zazzle.
+            </div>
+        </section>
+
+        <!-- Steps -->
+        <section class="py-5">
+            <h2 class="display-6 fw-bold mb-5">Steps.</h2>
+            <div class="d-flex flex-column gap-5">
+                <div class="d-flex gap-4 align-items-start">
+                    <div class="step-number">1</div>
+                    <p class="step-text fw-medium m-0">Click ‘Customize this Vision Board’ to open it on Zazzle.</p>
+                </div>
+                <div class="d-flex gap-4 align-items-start">
+                    <div class="step-number">2</div>
+                    <p class="step-text fw-medium m-0">Replace photos and text with your own goals and images in the
+                        editor.</p>
+                </div>
+                <div class="d-flex gap-4 align-items-start">
+                    <div class="step-number">3</div>
+                    <p class="step-text fw-medium m-0">Pick your size and finish, then place your order.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-5 text-center tagline-muted footer-border">
+        &copy; 2025 Vision Board Project. Fulfilled by Zazzle.
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../../../nav.js"></script>
+    <script>
+        const trigger = document.getElementById('main-cta-trigger');
+        const sticky = document.getElementById('sticky-cta');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // If main CTA is NOT visible, show the floating one
+                if (!entry.isIntersecting) {
+                    sticky.classList.remove('sticky-cta-hidden');
+                    sticky.classList.add('sticky-cta-visible');
+                } else {
+                    sticky.classList.add('sticky-cta-hidden');
+                    sticky.classList.remove('sticky-cta-visible');
+                }
+            });
+        }, {
+            threshold: 0 // Intersection triggers exactly when the button leaves the viewport
+        });
+
+        observer.observe(trigger);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+[
+  {
+    "brand_name": "Zazzle",
+    "domain": "zazzle.com",
+    "logo_src": "https://asset.zcache.com/assets/graphics/z4/uniquePages/zLogoDownload/logos/zazzleLetterform_black.png",
+    "categories": {
+      "stickers": {
+        "ratings": 4.9,
+        "reviews": "15k+" 
+      },
+      "posters": {
+        "ratings": 4.5,
+        "reviews": "12k+"
+      }
+    }
+  },
+  {
+    "brand_name": "Amazon",
+    "domain": "amazon.com",
+    "logo_src": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+    "categories": {
+      "wall-art": {
+        "ratings": 4.5,
+        "reviews": "5k+"
+      },
+      "posters": {
+        "ratings": 4.4,
+        "reviews": "3k+"
+      }
+    }
+  }
+]

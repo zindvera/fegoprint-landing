@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Contact - FegoPrint</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="media/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="media/favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="media/favicon/favicon-180x180.png">
+ <link rel="stylesheet" href="footer.css">
+    <script src="footer.js" defer></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .page-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3rem;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .switch-links {
+      margin-top: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .switch-links a {
+      margin: 0 0.5rem;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.25rem 0.9rem;
+      border-radius: 999px;
+      color: #0d6efd;
+    }
+
+    .switch-links a.active {
+      background-color: #0d6efd;
+      color: #ffffff;
+    }
+
+    p {
+      margin-bottom: 0.6rem;
+    }
+
+    .email-box {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      background-color: #ffffff;
+      border: 1px solid #dee2e6;
+      font-weight: 500;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="navdiv"></div>
+
+  <div class="page-wrapper" style="margin-top:0.6in;">
+    <h1>Contact</h1>
+    <br>
+    <div class="switch-links">
+      <a href="?tab=partnership" id="link-partnership" class="active">Submit Product</a>
+      <a href="?tab=query" id="link-query">Query</a>
+    </div>
+    <br>
+    <!-- Partnership (default) -->
+    <div id="section-partnership">
+      <p>To submit and show your products on FegoPrint, please contact:</p><br>
+
+      <div class="email-box">fegoprint@gmail.com</div>
+    </div>
+
+    <!-- Query -->
+    <div id="section-query" style="display:none;">
+      <p>For general questions, feedback or support related to FegoPrint, please contact:</p><br>
+      <div class="email-box">fegoprint@gmail.com</div>
+    </div>
+  </div>
+
+
+
+  <script src="nav.js"></script>
+  <script>
+    const linkQuery = document.getElementById('link-query');
+    const linkPartnership = document.getElementById('link-partnership');
+    const sectionQuery = document.getElementById('section-query');
+    const sectionPartnership = document.getElementById('section-partnership');
+
+    function setTab(tab) {
+      if (tab === 'query') {
+        linkQuery.classList.add('active');
+        linkPartnership.classList.remove('active');
+        sectionQuery.style.display = 'block';
+        sectionPartnership.style.display = 'none';
+      } else {
+        linkPartnership.classList.add('active');
+        linkQuery.classList.remove('active');
+        sectionPartnership.style.display = 'block';
+        sectionQuery.style.display = 'none';
+      }
+    }
+
+    function getTabFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get('tab');
+      return tab === 'query' ? 'query' : 'partnership';
+    }
+
+    // Init from URL (?tab=query or ?tab=partnership)
+    setTab(getTabFromUrl());
+
+    linkQuery.addEventListener('click', function (e) {
+      e.preventDefault();
+      const url = new URL(window.location);
+      url.searchParams.set('tab', 'query');
+      window.history.pushState({}, '', url);
+      setTab('query');
+    });
+
+    linkPartnership.addEventListener('click', function (e) {
+      e.preventDefault();
+      const url = new URL(window.location);
+      url.searchParams.set('tab', 'partnership');
+      window.history.pushState({}, '', url);
+      setTab('partnership');
+    });
+  </script>
+</body>
+
+</html>

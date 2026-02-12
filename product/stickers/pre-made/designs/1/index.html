@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sticker Design 1</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../../media/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../../media/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../../media/favicon/favicon-180x180.png">
+    <!-- Bootstrap CSS -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #fafafa;
+        }
+
+        #loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loader {
+            border: 6px solid #b6fad5;
+            /* Light blue background */
+            border-top: 6px solid #01ce7f;
+            /* Blue spinner color */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .imgcard {
+            width: 100%;
+            height: auto;
+        }
+
+
+
+        .top-header-wrapper {
+            max-width: 100%;
+            padding-left: 15px;
+            padding-right: 15px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+        @media (min-width: 992px) {
+            .top-header-wrapper {
+                max-width: 720px;
+            }
+        }
+
+
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            .top-header-wrapper {
+                max-width: 600px;
+            }
+        }
+
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 1rem;
+            margin: 0 auto;
+            flex-wrap: nowrap;
+        }
+
+
+        @media (max-width: 767.98px) {
+            .top-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+
+            .btn-amazon {
+                margin-top: 1rem;
+            }
+        }
+
+
+        .sticker-logo {
+            height: 150px;
+            width: auto;
+        }
+
+
+        .btn-amazon {
+            background-color: #FF9900;
+            color: white;
+            border-radius: 5px;
+            font-weight: 600;
+            border: none;
+            padding: 12px 32px;
+            font-size: 1.2rem;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            transition: background-color 0.3s ease;
+        }
+
+
+        @media (max-width: 767.98px) {
+            .btn-amazon {
+                padding: 8px 20px;
+                font-size: 1.1rem;
+            }
+        }
+
+
+        .grid-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+
+        @media (max-width: 767.98px) {
+            .grid-item {
+                margin-bottom: 0.5in;
+            }
+        }
+
+
+        .float-btn {
+            position: fixed;
+            z-index: 1050;
+            display: none;
+            animation: glowing-yellow 2.5s infinite alternate;
+            box-shadow: 0 0 10px 2px #FFDD55;
+        }
+
+
+        @media (min-width: 768px) {
+            .float-btn {
+                bottom: 20px;
+                right: 20px;
+                width: auto;
+            }
+        }
+
+
+        @media (max-width: 767.98px) {
+            .float-btn {
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: calc(100% - 40px);
+                text-align: center;
+            }
+        }
+
+
+        @keyframes glowing-yellow {
+            0% {
+                box-shadow: 0 0 5px 2px #FFD54F;
+                background-color: #FF9900;
+            }
+
+
+            50% {
+                box-shadow: 0 0 15px 6px #FFEB3B;
+                background-color: #FFB300;
+            }
+
+
+            100% {
+                box-shadow: 0 0 5px 2px #FFD54F;
+                background-color: #FF9900;
+            }
+        }
+
+
+        .segment-section {
+            margin-bottom: 2rem;
+        }
+
+
+        a.segment-link {
+            display: block;
+            color: inherit;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+            text-decoration: none;
+        }
+
+
+        a.segment-link:hover {
+            text-decoration: underline;
+        }
+
+
+        a.color-subsegment-link {
+            display: block;
+            margin-bottom: 1.5rem;
+            color: inherit;
+            text-decoration: none;
+        }
+
+
+        a.color-subsegment-link:hover {
+            text-decoration: underline;
+        }
+
+
+        a.color-subsegment-link h3 {
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+
+        .image-scroll-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 1rem;
+            padding-bottom: 0.5rem;
+        }
+
+
+        .image-scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+
+        .image-scroll-container::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 4px;
+        }
+
+
+        .image-card {
+            flex-shrink: 0;
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+            cursor: pointer;
+        }
+
+
+        .color-card {
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .color-cards-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+
+        @media (max-width: 767.98px) {
+            .color-cards-row {
+                flex-direction: column;
+            }
+        }
+
+
+        a.color-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .color-filtered-img {
+            width: 100% !important;
+            /* full width */
+            height: auto !important;
+            /* keep aspect ratio */
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+            display: block;
+        }
+
+
+        .accordion-expanded {
+            margin-top: 8px;
+            padding: 12px;
+            background: #e0ebfd;
+            border-radius: 4px;
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Triangle arrow above accordion pointing to button */
+        .triangle-arrow {
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 25px solid #e0ebfd;
+            position: absolute;
+            top: -24px;
+            right: 25px;
+            /* adjust horizontal position aligned with button */
+        }
+
+        /* Scroll fixed button style */
+        .fixed-scroll-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1100;
+            display: none;
+        }
+
+        #cameraButtonWrapper {
+            position: relative;
+            width: 70vw;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: end;
+            padding-right: 14px;
+        }
+
+
+
+        .close-icon {
+
+            font-size: 40px;
+
+            color: #333;
+            cursor: pointer;
+            user-select: none;
+
+        }
+
+        #phone {
+            width: 300px;
+            height: 600px;
+            border: 13px solid #424242;
+            border-radius: 46px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 28px 0px #bdbdbd40;
+            background: #000;
+            margin: 0 auto 5px;
+        }
+
+        #wallArt {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+            transform: scale(0.4) translateY(-20%);
+            transform-origin: center center;
+            transition: transform 2s cubic-bezier(0.56, 0.1, 0.92, 0.9);
+        }
+
+        #openCameraBtn {
+            position: absolute;
+            text-decoration: none;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            padding: 18px 0;
+            background-image: linear-gradient(90deg, #5E60CE 0%, #3A0CA3 100%);
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.19rem;
+            border: none;
+            border-radius: 42px;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 4px 16px -2px #3a0ca352;
+            transition: background 0.3s, box-shadow 0.24s;
+            text-align: center;
+            letter-spacing: 0.04em;
+        }
+
+
+        #imageContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 110vh;
+            width: 100%;
+            transition: transform 8s cubic-bezier(0.62, 0.21, 0.38, 0.95);
+        }
+
+        #imageContainer img {
+            height: 100%;
+            width: 130%;
+            object-fit: cover;
+            display: block;
+            transition: transform 3s cubic-bezier(0.4, 0.72, 0.39, 0.98);
+            transform-origin: center center;
+        }
+
+
+        #openCameraBtn:hover {
+            background-image: linear-gradient(90deg, #0980b7 10%, #4361ee 90%);
+            color: #fff;
+            box-shadow: 0 2px 30px -3px #3a0ca338;
+        }
+
+
+        /* Phone view: for screen widths up to 767px (small devices) */
+        @media (max-width: 767px) {
+
+
+            .fixed-scroll-btn {
+
+                top: 7px;
+                right: 10px;
+
+            }
+
+            .accordion-expanded {
+                margin-top: 25px;
+            }
+
+            .btn-amazon {
+                min-width: 60vw;
+                margin: auto;
+                text-align: center;
+            }
+
+            /* Phone-specific styles */
+            #cameraButtonWrapper {
+                width: 100vw;
+                margin-top: 0.25in;
+                padding-left: 14px;
+
+            }
+
+            .ctadiv {
+                display: flex;
+                justify-content: flex-end;
+                /* aligns content to the right */
+                align-items: center;
+                /* vertically centers content if needed */
+                padding-right: 15px;
+                margin-top: 0.2in;
+                /* optional padding */
+            }
+
+            .top-header {
+
+                align-items: center;
+            }
+
+            #accordion-text {
+
+                font-size: 24px;
+            }
+        }
+
+        /* Tablet view: for screen widths between 768px and 1023px */
+        @media (min-width: 768px) and (max-width: 1023px) {
+
+            .fixed-scroll-btn {
+
+                top: 7px;
+                right: 20px;
+
+            }
+
+
+            /* Tablet-specific styles */
+            /* Phone-specific styles */
+            #cameraButtonWrapper {
+                /* width: 70vw; */
+                position: relative;
+
+            }
+
+            #cameraAccordion {
+                position: absolute;
+                top: 0;
+                right: 0;
+                /* align to right of cameraButtonWrapper */
+                width: 55%;
+                margin-left: 0;
+                margin-top: 60px;
+                /* remove auto margin */
+                z-index: 1055;
+                /* overlay */
+
+            }
+
+            #accordion-text {
+                padding-left: 10px;
+                padding-right: 10px;
+                font-size: 24px;
+            }
+
+        }
+
+        /* Desktop view: for screen widths 1024px and above */
+        @media (min-width: 1024px) {
+
+            .fixed-scroll-btn {
+
+                top: 7px;
+                right: 28px;
+
+            }
+
+            #cameraButtonWrapper {
+                position: relative;
+                /* positioning context */
+                /* width: 65vw; */
+            }
+
+            #cameraAccordion {
+                position: absolute;
+                top: 0;
+                right: 0;
+                /* align to right of cameraButtonWrapper */
+                width: 50%;
+                margin-left: 0;
+                margin-top: 60px;
+                /* remove auto margin */
+                z-index: 1055;
+                /* overlay */
+
+            }
+
+            #accordion-text {
+                padding-left: 10px;
+                padding-right: 10px;
+                font-size: 25px;
+            }
+
+
+        }
+    </style>
+</head>
+
+
+<body>
+    <div id="loader-overlay">
+        <div class="loader"></div>
+    </div>
+    <div class="navdiv" style="margin-bottom: 0.6in;"></div>
+
+    <div class="top-header-wrapper">
+        <div class="top-header">
+            <img src="images/sticker.png" alt="Sticker Logo" class="sticker-logo" />
+            <div class="ctadiv">
+                <a id="topCta" href="https://www.amazon.com/dp/your-product-ASIN" target="_blank"
+                    rel="noopener noreferrer" class="btn-amazon">
+                    Get on Amazon
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Original Open Camera Button -->
+    <div id="cameraButtonWrapper">
+        <a href="mockoverflow.online" target="_blank" id="topenCameraBtn" class="btn btn-primary">Open Camera</a>
+
+        <!-- Accordion, open by default -->
+        <div id="cameraAccordion" class="accordion-expanded">
+            <div class="triangle-arrow"></div>
+            <div class="accordion-content">
+                <div class="close-accordion-content">
+                    <span class="close-icon" aria-label="Close accordion" role="button" tabindex="0">&times;</span>
+                </div>
+                <div class="textaccordion" style="text-align: start;">
+                    <p id="accordion-text">Open the camera to see how this sticker will look on your laptop, car, or
+                        anything.</p>
+
+                </div>
+                <!-- Put your camera UI or content here -->
+                <br>
+                <div id="phone">
+                    <div id="imageContainer">
+                        <img id="bedroomImage" src="../../../../../media/laptop-demo.jpg" alt="Bedroom" />
+                    </div>
+                    <div id="wallArt" style="background-image: url('../../../../../media/sticker-demo.png')">
+                    </div>
+                    <a href="wall-art/demo/index.html" id="openCameraBtn" aria-label="Open camera overlay preview">Open
+                        Camera</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll fixed button, hidden initially -->
+    <a href="mockoverflow.online" target="_blank" id="scrollOpenCameraBtn"
+        class="btn btn-primary fixed-scroll-btn hidden-btn">
+        Open Camera
+    </a>
+
+
+
+    <div id="stickers-sections" class="container my-4"></div>
+
+
+
+    <a id="floatCta" href="https://www.amazon.com/dp/your-product-ASIN" target="_blank" rel="noopener noreferrer"
+        class="btn-amazon float-btn">
+        Get on Amazon
+    </a>
+
+
+    <footer
+        style="margin-top: 1.5in; padding: 1.25rem 0; text-align: center; font-size: 0.9rem; color: #4b5563; background: linear-gradient(90deg,#e7f7ec,#f3f4f6); border-top: 1px solid #d1d5db;">
+        <div style="max-width: 900px; margin: 0 auto; padding: 0 1rem;">
+            <p style="margin: 0 0 0.25rem 0;">&copy; 2025 FegoPrint. All rights reserved.</p>
+            <p style="margin: 0;">
+                <a href="../../../../../about.html"
+                    style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">About</a>
+                <span style="color:#9ca3af;">|</span>
+                <a href="../../../../../privacy.html"
+                    style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Privacy</a>
+                <span style="color:#9ca3af;">|</span>
+                <a href="../../../../../terms.html"
+                    style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Terms</a>
+                <span style="color:#9ca3af;">|</span>
+                <a href="../../../../../cookies.html"
+                    style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Cookies</a>
+                <span style="color:#9ca3af;">|</span>
+                <a href="../../../../../contact.html"
+                    style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Contact</a>
+            </p>
+        </div>
+    </footer>
+
+
+    <script src="../../../../../nav.js"></script>
+    <script>
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('cameraGuide') === 'false') {
+                const accordionDiv = document.getElementById('cameraAccordion');
+                if (accordionDiv) {
+                    accordionDiv.style.display = 'none';
+                }
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            function getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+                return null;
+            }
+
+            function setCookie(name, value) {
+                const d = new Date();
+                d.setFullYear(d.getFullYear() + 10); // 10 years expiration
+                const expires = "expires=" + d.toUTCString();
+                document.cookie = `${name}=${value};${expires};path=/`;
+            }
+
+            const stickerCameraGuide = getCookie('stickerCameraGuide');
+
+            if (!stickerCameraGuide) {
+                setCookie('stickerCameraGuide', 'true');
+            } else {
+                const element = document.getElementById('accordion-text');
+                if (element) {
+                    element.remove();
+                    // Apply margin top regardless of accordion-text existence
+                    const phoneElement = document.getElementById("phone");
+                    if (phoneElement) {
+                        phoneElement.style.marginTop = "-35px";
+                        console.log("Margin applied to phone element");
+                    } else {
+                        console.log("Phone element not found");
+                    }
+
+                }
+            }
+        });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const topCta = document.getElementById('topCta');
+            const floatCta = document.getElementById('floatCta');
+
+
+
+            if (!topCta || !floatCta) return;
+
+
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            floatCta.style.display = 'none';
+                        } else {
+                            floatCta.style.display = 'block';
+                        }
+                    });
+                },
+                { threshold: 0.1 }
+            );
+            observer.observe(topCta);
+        });
+
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const sectionsContainer = document.getElementById('stickers-sections');
+            const urlParams = new URLSearchParams(window.location.search);
+            const filterFor = urlParams.get('for');
+            const filterColor = urlParams.get('color');
+
+
+
+            const products = {
+                laptop: ["silver", "black", "blue"],
+                tablet: ["grey", "blue"],
+                phone: [],
+                tumbler: []
+            };
+
+
+
+            const imageExtensions = ['jpg'];
+            const maxImagesToCheck = 3;
+
+
+
+            function formatColorName(color) {
+                return color.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            }
+
+
+
+            function checkImageExists(url) {
+                return new Promise(resolve => {
+                    const img = new Image();
+                    img.onload = () => resolve(true);
+                    img.onerror = () => resolve(false);
+                    img.src = url;
+                });
+            }
+
+
+
+            async function scanImagesByPrefixAndColor(prefix, color = null) {
+                const foundImages = [];
+                const colorsFound = new Set();
+
+
+
+                const colorsToScan = color ? [color] : (products[prefix] || []);
+
+
+
+                for (let num = 1; num <= maxImagesToCheck; num++) {
+                    for (const clr of colorsToScan) {
+                        for (const ext of imageExtensions) {
+                            const url = `images/${prefix}-${clr}-${num}.${ext}`;
+                            // eslint-disable-next-line no-await-in-loop
+                            const exists = await checkImageExists(url);
+                            if (exists) {
+                                foundImages.push({ url, color: clr });
+                                colorsFound.add(clr);
+                            }
+                        }
+                    }
+                }
+                return { foundImages, colorsFound: Array.from(colorsFound) };
+            }
+
+
+
+            async function loadOtherProductsOverview(currentPrefix) {
+                for (const prefix of Object.keys(products)) {
+                    if (prefix === currentPrefix) continue;
+
+
+
+                    const { foundImages } = await scanImagesByPrefixAndColor(prefix);
+                    if (!foundImages.length) continue;
+
+
+
+                    const sectionDiv = document.createElement('div');
+                    sectionDiv.className = 'segment-section';
+
+
+
+                    const link = document.createElement('a');
+                    link.href = `?for=${prefix}&cameraGuide=false`;
+                    link.className = 'segment-link';
+                    link.textContent = `For ${prefix.charAt(0).toUpperCase() + prefix.slice(1)}`;
+                    sectionDiv.appendChild(link);
+
+
+
+                    const imagesContainerLink = document.createElement('a');
+                    imagesContainerLink.href = `?for=${prefix}&cameraGuide=false`;
+                    imagesContainerLink.className = 'image-scroll-container';
+                    imagesContainerLink.style.display = 'flex';
+                    imagesContainerLink.style.overflowX = 'auto';
+                    imagesContainerLink.style.gap = '1rem';
+                    imagesContainerLink.style.paddingBottom = '0.5rem';
+
+
+
+                    foundImages.slice(0, 4).forEach(({ url }) => {
+                        const imgEl = document.createElement('img');
+                        imgEl.className = 'image-card';
+                        imgEl.src = url;
+                        imgEl.alt = `Image of ${prefix}`;
+                        imagesContainerLink.appendChild(imgEl);
+                    });
+
+
+
+                    sectionDiv.appendChild(imagesContainerLink);
+                    sectionsContainer.appendChild(sectionDiv);
+                }
+            }
+
+
+
+            async function loadColorFilteredSegment(prefix, color) {
+                const { foundImages, colorsFound } = await scanImagesByPrefixAndColor(prefix, color);
+                if (!foundImages.length) {
+                    sectionsContainer.textContent = 'No images found for this color and product.';
+                    return;
+                }
+
+                sectionsContainer.innerHTML = '';
+
+                const mainTitle = document.createElement('h1');
+                mainTitle.className = 'mb-4';
+                mainTitle.textContent = `${color.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())} ${prefix.charAt(0).toUpperCase() + prefix.slice(1)}`;
+                sectionsContainer.appendChild(mainTitle);
+
+                const row = document.createElement('div');
+                row.className = 'row color-filtered-row';
+
+                foundImages.forEach(({ url }) => {
+                    const col = document.createElement('div');
+                    col.className = 'col-12 col-md-8 col-lg-8 mb-3';
+
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.alt = `${color.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())} ${prefix} image`;
+                    img.className = 'color-filtered-img';
+
+                    col.appendChild(img);
+                    row.appendChild(col);
+                });
+
+                sectionsContainer.appendChild(row);
+
+                // Other Colors title
+                const otherColorsTitle = document.createElement('h3');
+                otherColorsTitle.textContent = 'Other Colors';
+                otherColorsTitle.style.marginTop = '0.9in';   // or your desired top margin
+                otherColorsTitle.style.marginBottom = '0.5in'; // or your desired bottom margin
+                sectionsContainer.appendChild(otherColorsTitle);
+
+                // New layout: one image per color in a responsive grid row
+                const colorsRow = document.createElement('div');
+                colorsRow.className = 'row';
+
+                for (const clr of products[prefix] || []) {
+                    if (clr === color) continue;
+
+                    const { foundImages: colorImgs } = await scanImagesByPrefixAndColor(prefix, clr);
+                    if (!colorImgs.length) continue;
+
+                    const colDiv = document.createElement('div');
+                    colDiv.className = 'col-12 col-md-6 col-lg-6 mb-3';
+
+                    const colorLink = document.createElement('a');
+                    colorLink.href = `?for=${prefix}&color=${clr}&cameraGuide=false`;
+                    colorLink.className = 'd-block';
+
+                    const imgEl = document.createElement('img');
+                    imgEl.src = colorImgs[0].url;
+                    imgEl.alt = `${prefix} ${clr} image`;
+                    imgEl.className = 'imgcard rounded';
+
+                    colorLink.appendChild(imgEl);
+                    colDiv.appendChild(colorLink);
+                    colorsRow.appendChild(colDiv);
+                }
+
+                sectionsContainer.appendChild(colorsRow);
+
+                // Other Products title and overview (unchanged)
+                const otherProdsTitle = document.createElement('h3');
+                otherProdsTitle.textContent = 'Other Products';
+                otherProdsTitle.style.marginTop = '0.9in';   // or your desired top margin
+                otherProdsTitle.style.marginBottom = '0.5in'; // or your desired bottom margin
+                sectionsContainer.appendChild(otherProdsTitle);
+
+                await loadOtherProductsOverview(prefix);
+            }
+
+
+            async function loadProductSegment(prefix) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const paramKeys = Array.from(urlParams.keys());
+                const onlyForParam = paramKeys.length === 1 && paramKeys[0] === 'for';
+
+                const { foundImages, colorsFound } = await scanImagesByPrefixAndColor(prefix);
+                if (!foundImages.length) {
+                    sectionsContainer.textContent = 'No images found for this product.';
+                    return;
+                }
+
+                sectionsContainer.innerHTML = '';
+
+                // Create product title link that wraps just the title text (not the entire container)
+                const productLink = document.createElement('a');
+                productLink.href = `?for=${prefix}&cameraGuide=false`;
+                productLink.className = 'segment-link';
+
+                // Create title heading inside link
+                const title = document.createElement('span');
+                title.textContent = `Sticker For ${prefix.charAt(0).toUpperCase() + prefix.slice(1)}`;
+                productLink.appendChild(title);
+                sectionsContainer.appendChild(productLink);
+
+                if (onlyForParam) {
+                    // New grid layout: 2 cols on md+ and 1 col on smaller screens
+                    const rowDiv = document.createElement('div');
+                    rowDiv.className = 'row';
+
+                    // Group foundImages by color for correct links
+                    const imagesByColor = {};
+                    foundImages.forEach(({ url, color }) => {
+                        if (!imagesByColor[color]) imagesByColor[color] = [];
+                        imagesByColor[color].push(url);
+                    });
+
+                    Object.entries(imagesByColor).forEach(([color, urls]) => {
+                        urls.forEach(url => {
+                            const colDiv = document.createElement('div');
+                            colDiv.className = 'col-12 col-md-6 col-lg-6 mb-3';
+
+                            const link = document.createElement('a');
+                            link.href = `?for=${prefix}&color=${color}&cameraGuide=false`;
+                            link.className = 'd-block'; // block to apply full column link
+
+                            const img = document.createElement('img');
+                            img.src = url;
+                            img.alt = `${prefix} ${color} image`;
+                            img.className = 'imgcard rounded'; // bootstrap responsive and rounded corners
+
+                            link.appendChild(img);
+                            colDiv.appendChild(link);
+                            rowDiv.appendChild(colDiv);
+                        });
+                    });
+
+                    sectionsContainer.appendChild(rowDiv);
+
+                } else {
+                    // Existing logic for multiple parameters or when color param exists
+                    // Scan images per color for layout decision
+                    const colorImagesData = await Promise.all(colorsFound.map(color => scanImagesByPrefixAndColor(prefix, color)));
+                    const imagesCountArr = colorImagesData.map(data => data.foundImages.length);
+
+                    if (colorsFound.length === 2 && imagesCountArr.every(c => c <= 2)) {
+                        const cardsRow = document.createElement('div');
+                        cardsRow.className = 'color-cards-row';
+
+                        colorsFound.forEach((color, i) => {
+                            const colorLink = document.createElement('a');
+                            colorLink.href = `?for=${prefix}&color=${color}&cameraGuide=false`;
+                            colorLink.className = 'color-card-link';
+
+                            const colorCard = document.createElement('div');
+                            colorCard.className = 'color-card';
+
+                            const colorTitle = document.createElement('h3');
+                            colorTitle.textContent = color.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                            colorCard.appendChild(colorTitle);
+
+                            const imagesContainer = document.createElement('div');
+                            imagesContainer.className = 'image-scroll-container';
+
+                            colorImagesData[i].foundImages.forEach(({ url }) => {
+                                const imgEl = document.createElement('img');
+                                imgEl.className = 'image-card';
+                                imgEl.src = url;
+                                imgEl.alt = `${prefix} ${color} image`;
+                                imagesContainer.appendChild(imgEl);
+                            });
+
+                            colorCard.appendChild(imagesContainer);
+                            colorLink.appendChild(colorCard);
+                            cardsRow.appendChild(colorLink);
+                        });
+
+                        sectionsContainer.appendChild(cardsRow);
+                    } else {
+                        for (let i = 0; i < colorsFound.length; i++) {
+                            const color = colorsFound[i];
+                            const { foundImages } = colorImagesData[i];
+
+                            const colorLink = document.createElement('a');
+                            colorLink.href = `?for=${prefix}&color=${color}&cameraGuide=false`;
+                            colorLink.className = 'color-card-link';
+
+                            const colorCard = document.createElement('div');
+                            colorCard.className = 'color-card';
+
+                            const colorTitle = document.createElement('h3');
+                            colorTitle.textContent = color.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                            colorCard.appendChild(colorTitle);
+
+                            const imagesContainer = document.createElement('div');
+                            imagesContainer.className = 'image-scroll-container';
+
+                            foundImages.slice(0, 4).forEach(({ url }) => {
+                                const imgEl = document.createElement('img');
+                                imgEl.className = 'image-card';
+                                imgEl.src = url;
+                                imgEl.alt = `${prefix} ${color} image`;
+                                imagesContainer.appendChild(imgEl);
+                            });
+
+                            colorCard.appendChild(imagesContainer);
+                            colorLink.appendChild(colorCard);
+                            sectionsContainer.appendChild(colorLink);
+                        }
+                    }
+                }
+
+                // Other products overview
+                const otherProdsTitle = document.createElement('h3');
+                otherProdsTitle.textContent = 'Other Products';
+                otherProdsTitle.style.marginTop = '0.9in';   // or your desired top margin
+                otherProdsTitle.style.marginBottom = '0.5in'; // or your desired bottom margin
+                sectionsContainer.appendChild(otherProdsTitle);
+
+                await loadOtherProductsOverview(prefix);
+            }
+
+
+            async function loadMainSegments() {
+                sectionsContainer.innerHTML = '';
+
+
+
+                for (const prefix of Object.keys(products)) {
+                    if (filterFor === prefix) continue;
+
+
+
+                    const { foundImages } = await scanImagesByPrefixAndColor(prefix);
+                    if (!foundImages.length) continue;
+
+
+
+                    const sectionDiv = document.createElement('div');
+                    sectionDiv.className = 'segment-section';
+
+
+
+                    const link = document.createElement('a');
+                    link.href = `?for=${prefix}&cameraGuide=false`;
+                    link.className = 'segment-link';
+                    link.textContent = `For ${prefix.charAt(0).toUpperCase() + prefix.slice(1)}`;
+                    sectionDiv.appendChild(link);
+
+
+
+                    const imagesContainerLink = document.createElement('a');
+                    imagesContainerLink.href = `?for=${prefix}&cameraGuide=false`;
+                    imagesContainerLink.className = 'image-scroll-container';
+                    imagesContainerLink.style.display = 'flex';
+                    imagesContainerLink.style.overflowX = 'auto';
+                    imagesContainerLink.style.gap = '1rem';
+                    imagesContainerLink.style.paddingBottom = '0.5rem';
+
+
+
+                    foundImages.slice(0, 4).forEach(({ url }) => {
+                        const imgEl = document.createElement('img');
+                        imgEl.className = 'image-card';
+                        imgEl.src = url;
+                        imgEl.alt = `Image of ${prefix}`;
+                        imagesContainerLink.appendChild(imgEl);
+                    });
+
+
+
+                    sectionDiv.appendChild(imagesContainerLink);
+                    sectionsContainer.appendChild(sectionDiv);
+                }
+            }
+
+
+
+            async function initialize() {
+                if (filterFor && filterColor && products[filterFor]?.includes(filterColor)) {
+                    await loadColorFilteredSegment(filterFor, filterColor);
+                } else if (filterFor && products[filterFor]) {
+                    await loadProductSegment(filterFor);
+                } else {
+                    await loadMainSegments();
+                }
+            }
+
+
+
+            initialize();
+
+        });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cameraWrapper = document.getElementById('cameraButtonWrapper');
+            const scrollOpenCameraBtn = document.getElementById('scrollOpenCameraBtn');
+
+            if (!cameraWrapper || !scrollOpenCameraBtn) return;
+
+            // Observe cameraButtonWrapper's visibility
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            scrollOpenCameraBtn.style.display = 'none';
+                        } else {
+                            scrollOpenCameraBtn.style.display = 'block';
+                        }
+                    });
+                },
+                { threshold: 0 }
+            );
+            observer.observe(cameraWrapper);
+        });
+
+
+
+
+        const imageContainer = document.getElementById('imageContainer');
+        const wallArtDiv = document.getElementById('wallArt');
+        let toLeft = true;
+        let step = 0;
+        let slideInterval, wallArtInterval;
+
+
+        function slideImage() {
+            switch (step) {
+                case 0:
+                    imageContainer.style.transform = "translateX(-20px) translateY(0)";
+                    break;
+                case 1:
+                    imageContainer.style.transform = "translateX(-10px) translateY(0)";
+                    break;
+                case 2:
+                    imageContainer.style.transform = "translateX(-5px) translateY(-15px)";
+                    break;
+                case 3:
+                    imageContainer.style.transform = "translateX(-10px) translateY(15px)";
+                    break;
+                case 4:
+                    imageContainer.style.transform = "translateX(0) translateY(0)";
+                    break;
+            }
+            step = (step + 1) % 6;
+        }
+
+
+        function animateWallArt() {
+            switch (step) {
+
+                case 0:
+                    wallArtDiv.style.transform = "scale(0.6) translateY(-20%) rotate(50deg)";
+                    break;
+                case 1:
+                    wallArtDiv.style.transform = "scale(0.4) translateY(-30%) rotate(40deg)";
+                    break;
+                case 2:
+                    wallArtDiv.style.transform = "scale(0.55) translateY(-18%) rotate(25deg)";
+                    break;
+                case 3:
+                    wallArtDiv.style.transform = "scale(0.64) translateY(-21%) rotate(30deg)";
+                    break;
+                case 4:
+                    wallArtDiv.style.transform = "scale(0.45) translateY(-20%) rotate(35deg)";
+                    break;
+                case 5:
+                    wallArtDiv.style.transform = "scale(0.38) translateY(-28%) rotate(40deg)";
+                    break;
+                case 6:
+                    wallArtDiv.style.transform = "scale(0.5) translateY(-18%) rotate(6deg)";
+                    break;
+                case 7:
+                    wallArtDiv.style.transform = "scale(0.4) translateY(-23%) rotate(0deg)";
+                    break;
+                case 8:
+                    wallArtDiv.style.transform = "scale(0.55) translateY(-19%) rotate(50deg)";
+                    break;
+                case 9:
+                    wallArtDiv.style.transform = "scale(0.4) translateY(-25%) rotate(40deg)";
+                    break;
+
+            }
+            step = (step + 1) % 10;
+        }
+
+
+        function startAnimations() {
+            slideInterval = setInterval(slideImage, 5000);
+            wallArtInterval = setInterval(animateWallArt, 5000);
+            slideImage();
+            animateWallArt();
+        }
+        setTimeout(startAnimations, 2500);
+        document.getElementById('openCameraBtn').addEventListener('click', () => {
+            window.location.href = '/camera-overlay.html';
+        });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const closeIcon = document.querySelector('.accordion-content .close-icon');
+            if (!closeIcon) return;
+
+            closeIcon.addEventListener('click', () => {
+                const cameraAccordion = document.getElementById('cameraAccordion');
+                if (cameraAccordion) {
+                    cameraAccordion.remove();
+                }
+            });
+
+            // Optional: keyboard accessibility (Enter or Space to activate)
+            closeIcon.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    closeIcon.click();
+                }
+            });
+        });
+
+
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader-overlay');
+            if (loader) {
+                loader.style.display = 'none';
+            }
+        });
+
+    </script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Easy 5-Ingredient Healthy Cookbook</title>
+    <style>
+        /* Modern System Font Stack */
+        :root {
+            --bg-light: #fafafa;
+            /* Light white main background */
+            --bg-highlight: #e2f2e2;
+            /* Light green for bullet highlights */
+            --text-main: #2c3e50;
+            --text-muted: #5d6d7e;
+            --star-gold: #f1c40f;
+            --cta-bg: #1a252f;
+            --cta-hover: #000000;
+            --success-green: #2e7d32;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: var(--text-main);
+            line-height: 1.6;
+            background-color: #ffffff;
+        }
+
+        /* Hero Section Container */
+        .hero-section {
+            background-color: var(--bg-light);
+            padding: 4rem 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 85vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        /* Image Styling */
+        .cover-wrapper {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .cover-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            display: block;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 22px;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+            color: #1a252f;
+            letter-spacing: -0.03em;
+        }
+
+        .rating-line {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 3.5rem;
+            /* Increased spacing to separate from What You Get */
+        }
+
+        .stars {
+            color: var(--star-gold);
+            font-size: 1.1rem;
+            margin-right: 4px;
+        }
+
+        /* Benefits Section */
+        .benefits-box {
+            text-align: left;
+            margin-bottom: 2.5rem;
+        }
+
+        .benefits-box h2 {
+            font-size: 1.1rem;
+            margin-bottom: 1.25rem;
+            color: var(--success-green);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 800;
+        }
+
+        .benefits-list {
+            list-style: none;
+        }
+
+        .benefits-list li {
+            position: relative;
+            padding: 1rem 1rem 1rem 3rem;
+            margin-bottom: 0.85rem;
+            font-size: 1.1rem;
+            color: #1a252f;
+            line-height: 1.4;
+            background-color: var(--bg-highlight);
+            border-radius: 10px;
+        }
+
+        .benefits-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 1.25rem;
+            color: var(--success-green);
+            font-weight: 900;
+            font-size: 1.2rem;
+        }
+
+        /* Emphasized first words for scanning */
+        .benefit-focus {
+            display: block;
+            /* Pushes text to be very prominent */
+            font-weight: 900;
+            font-size: 1.15rem;
+            color: #000;
+            margin-bottom: 0.1rem;
+        }
+
+        /* CTA Button Section */
+        .cta-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .cta-action-wrapper {
+            display: flex;
+            flex-direction: column;
+            /* Phone view: vertical */
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .cta-lead-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--cta-bg);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 1.1rem 3rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            text-align: center;
+        }
+
+        .cta-button:hover {
+            background-color: var(--cta-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.18);
+        }
+
+        .tiny-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            max-width: 350px;
+        }
+
+        /* Tablet Layout (768px and up) */
+        @media (min-width: 768px) {
+            .cta-action-wrapper {
+                flex-direction: row;
+                /* Tablet/Desktop view: horizontal */
+                align-items: center;
+                gap: 1.5rem;
+            }
+        }
+
+        /* Desktop Layout (1024px and up) */
+        @media (min-width: 1024px) {
+            .container {
+                flex-direction: row;
+                text-align: left;
+                align-items: center;
+                gap: 6rem;
+            }
+
+            .content-area {
+                text-align: left;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            .cta-container {
+                align-items: flex-start;
+                /* Aligned with text on desktop */
+            }
+
+            .benefit-focus {
+                display: inline;
+                /* Keeps it on one line for desktop wide layout */
+                margin-right: 0.25rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navdiv" style="margin-bottom: 0.45in;"></div>
+    <section class="hero-section">
+        <div class="container">
+            <!-- Book Cover -->
+            <div class="cover-wrapper">
+                <img src="https://www.plantbasedcookbook.com/wp-content/uploads/2025/06/The-complete-plant-based-cookbook-e1756873678660.png"
+                    alt="The Easy 5-Ingredient Healthy Cookbook Cover" class="cover-image"
+                    onerror="this.src='https://via.placeholder.com/400x400?text=Cookbook+Cover'">
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <h1>The Easy 5‑Ingredient Healthy Cookbook</h1>
+
+                <p class="rating-line">
+                    <span class="stars">★★★★☆</span> 4.4/5 based on 1,900+ reviews on Digistore24 (rating may change
+                    over time).
+                </p>
+
+                <div class="benefits-box">
+                    <h2>What You Will Get</h2>
+                    <ul class="benefits-list">
+                        <li>
+                            <span class="benefit-focus">150+ simple, 5-ingredient recipes</span> for delicious, quick
+                            meals.
+                        </li>
+                        <li>
+                            <span class="benefit-focus">Beginner-friendly steps</span> to help you cook with total
+                            confidence.
+                        </li>
+                        <li>
+                            <span class="benefit-focus">Budget-friendly dishes</span> using common everyday supermarket
+                            staples.
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="cta-container">
+                    <div class="cta-action-wrapper">
+                        <span class="cta-lead-text">View full details on</span>
+                        <!-- Replace '#' with your actual Digistore24 affiliate link -->
+                        <a href="#" class="cta-button">Digistore24</a>
+                    </div>
+                    <p class="tiny-note">You’ll be redirected to Digistore24 to see full details, price, and reviews.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <footer
+        style="margin-top: 1.5in; padding: 1.25rem 0; text-align: center; font-size: 0.9rem; color: #4b5563; background: linear-gradient(90deg,#e7f7ec,#f3f4f6); border-top: 1px solid #d1d5db;">
+        <div style="max-width: 900px; margin: 0 auto; padding: 0 1rem;">
+            <p style="margin: 0 0 0.25rem 0;">&copy; 2025 FegoPrint. All rights reserved.</p>
+            <p style="margin: 0;">
+                <a href="../../../about.html" style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">About</a>
+                <span style="color:#9ca3af;">|</span>
+                <a href="../../../privacy.html"
+                    style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Privacy</a>
+                <span style="color:#9ca3af;">|</span>
+                <a href="../../../terms.html" style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Terms</a>
+                <span style="color:#9ca3af;">|</span>
+                <a href="../../../cookies.html"
+                    style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Cookies</a>
+                <span style="color:#9ca3af;">|</span>
+                <a href="../../../contact.html"
+                    style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">Contact</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="../../../nav.js"></script>
+</body>
+
+</html>

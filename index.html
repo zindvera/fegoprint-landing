@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="footer.css">
+    <script src="footer.js" defer></script>
+    <title>FegoPrint - Product Landing Pages</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="media/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="media/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="media/favicon/favicon-180x180.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --brand-green: #10b981;
+            /* Main Fegoprint Green */
+            --brand-blue: #3b82f6;
+            /* Accent Blue */
+            --brand-blue-dark: #2563eb;
+            /* Slightly darker blue for hover */
+            --bg-light: #f9fafb;
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            font-family: system-ui, -apple-system, sans-serif;
+            color: var(--text-dark);
+        }
+
+        /* Navigation Placeholder Logic */
+        .navdiv {
+            display: none;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1050;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .navdiv.show-nav {
+            display: block;
+        }
+
+        /* Card Link Wrapper */
+        .card-link {
+            text-decoration: none !important;
+            color: inherit !important;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        /* Horizontal Scroll & Centering Logic */
+        .scroll-container-relative {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .image-scroll-wrapper {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 1.5rem;
+            padding: 1.5rem 0;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+            justify-content: center;
+        }
+
+        .image-scroll-wrapper.has-overflow {
+            justify-content: flex-start;
+        }
+
+        .image-scroll-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scroll-item {
+            flex: 0 0 calc(25% - 1.2rem);
+            scroll-snap-align: start;
+            min-width: 250px;
+        }
+
+        .card-custom {
+            position: relative;
+            /* Added for loader positioning */
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            min-height: 250px;
+            /* Ensures space before image loads */
+        }
+
+        .card-custom:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-custom img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            display: block;
+            opacity: 0;
+            /* Hidden initially */
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .card-custom img.loaded {
+            opacity: 1;
+            /* Fade in when loaded */
+        }
+
+        /* Per-image Loader UI */
+        .image-loader-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f3f4f6;
+            z-index: 5;
+            transition: opacity 0.3s ease;
+        }
+
+        .loader-spinner-small {
+            border: 3px solid #e5e7eb;
+            border-top: 3px solid var(--brand-green);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 8px;
+        }
+
+        .loader-text-small {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Desktop Navigation Arrows (Blue to Dark Blue, No Shadow/Border) */
+        .nav-arrow {
+            display: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: var(--brand-blue);
+            /* Default Blue */
+            border-radius: 50%;
+            border: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 25;
+            color: #ffffff;
+            box-shadow: none;
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-arrow:hover {
+            background: var(--brand-blue-dark);
+            /* Slightly darker blue on hover */
+            color: #ffffff;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: none;
+        }
+
+        .nav-arrow.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-50%) scale(0.9);
+        }
+
+        .arrow-left {
+            left: -30px;
+        }
+
+        .arrow-right {
+            right: -30px;
+        }
+
+        /* Section Title & Presentation */
+        .section-header {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-weight: 800;
+            font-size: 2.25rem;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        /* Feature Steps Logic */
+        .feature-steps-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-width: 70px;
+        }
+
+        .icon-box {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            transition: transform 0.2s ease;
+            background: transparent !important;
+        }
+
+        .feature-step span {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .feature-step svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .step-edit svg {
+            color: #3b82f6;
+        }
+
+        .step-download svg {
+            color: #10b981;
+        }
+
+        .step-print svg {
+            color: #0891b2;
+        }
+
+        .step-order svg {
+            color: #f59e0b;
+        }
+
+        .step-deliver svg {
+            color: #6366f1;
+        }
+
+        .feature-step-arrow {
+            color: #4b5563;
+            font-size: 1.2rem;
+            margin-top: -1.2rem;
+            font-weight: 400;
+        }
+
+        /* Bottom Right CTA (Blue to Dark Blue, No Shadow/Border) */
+        .segment-cta-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+            padding-right: 1rem;
+        }
+
+        .segment-cta-btn {
+            background-color: var(--brand-blue);
+            /* Default Blue */
+            color: white !important;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: none;
+        }
+
+        .segment-cta-btn:hover {
+            background-color: var(--brand-blue-dark);
+            /* Slightly darker blue on hover */
+            transform: translateX(5px);
+            box-shadow: none;
+        }
+
+        /* General UI components */
+        #index-logo {
+            height: 60px;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--brand-green);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-top: -0.5rem;
+        }
+
+        /* Tablet View */
+        @media (max-width: 992px) {
+            .scroll-item {
+                flex: 0 0 calc(50% - 1rem);
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* Desktop View */
+        @media (min-width: 1024px) {
+            .nav-arrow {
+                display: flex;
+            }
+        }
+
+        /* Phone View */
+        @media (max-width: 767px) {
+
+            .section-title {
+                text-align: start;
+                padding: 0px 3px 0px 3px;
+            }
+
+            .section-subtitle {
+                text-align: start;
+                padding: 0px 3px 0px 3px;
+            }
+
+
+            #index-logo {
+                height: 45px;
+            }
+
+            .section-header {
+                margin-bottom: 1.75rem;
+            }
+
+            /* Strict Paging Logic for Phone View */
+            .scroll-item {
+                flex: 0 0 80%;
+                scroll-snap-align: center;
+                /* Snaps to the center of viewport */
+                scroll-snap-stop: always;
+                /* CRITICAL: Prevents bypassing items during a swipe */
+            }
+
+            .image-scroll-wrapper {
+                justify-content: flex-start;
+                padding-left: 0;
+                padding-right: 0;
+                scroll-snap-type: x mandatory;
+                /* Enforces the snapping behavior */
+                -webkit-overflow-scrolling: touch;
+                /* Ensures smooth touch physics */
+            }
+
+            /* Padding equivalents to allow the 80% wide card to center perfectly */
+            .image-scroll-wrapper::before,
+            .image-scroll-wrapper::after {
+                content: '';
+                flex: 0 0 10%;
+                /* (100% viewport width - 80% card width) / 2 */
+            }
+
+            .feature-step-arrow {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="container py-4 fixed-nav">
+        <div class="d-flex justify-content-center">
+            <img id="index-logo" src="media/logo/fegoprint.png" alt="Fegoprint Brand Logo"
+                onerror="this.src='https://via.placeholder.com/200x60?text=FegoPrint+Logo'" />
+        </div>
+    </div>
+
+    <div class="navdiv"></div>
+
+    <div class="home-page-content container py-5">
+
+        <section class="mb-5 pb-5">
+            <div class="section-header text-center">
+                <h2 class="section-title">Custom Vision Boards</h2>
+                <p class="section-subtitle">
+                    Customize text, images & anything and get your poster.
+                </p>
+
+
+            </div>
+
+            <div class="scroll-container-relative">
+                <button class="nav-arrow arrow-left hidden" aria-label="Scroll left"
+                    onclick="event.preventDefault();">&#10094;</button>
+                <div class="image-scroll-wrapper">
+                    <div class="scroll-item">
+                        <a href="https://fegoprint.info/product/wall-art/custom/special/1/" class="card-link">
+                            <div class="card-custom">
+                                <div class="image-loader-overlay">
+                                    <div class="loader-spinner-small"></div>
+                                    <div class="loader-text-small">Loading Image</div>
+                                </div>
+                                <img src="product/wall-art/custom/special/1/images/1/1/mock-1.jpg" alt="Vision Board 1"
+                                    class="scroll-img">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="scroll-item">
+                        <a href="https://fegoprint.info/product/wall-art/custom/special/1/" class="card-link">
+                            <div class="card-custom">
+                                <div class="image-loader-overlay">
+                                    <div class="loader-spinner-small"></div>
+                                    <div class="loader-text-small">Loading Image</div>
+                                </div>
+                                <img src="product/wall-art/custom/special/1/images/1/1/mock-2.jpg" alt="Vision Board 2"
+                                    class="scroll-img">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="scroll-item">
+                        <a href="https://fegoprint.info/product/wall-art/custom/special/1/?d=1&v=2" class="card-link">
+                            <div class="card-custom">
+                                <div class="image-loader-overlay">
+                                    <div class="loader-spinner-small"></div>
+                                    <div class="loader-text-small">Loading Image</div>
+                                </div>
+                                <img src="product/wall-art/custom/special/1/images/1/2/mock-1.jpg" alt="Vision Board 3"
+                                    class="scroll-img">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="scroll-item">
+                        <a href="https://fegoprint.info/product/wall-art/custom/special/1/?d=1&v=2" class="card-link">
+                            <div class="card-custom">
+                                <div class="image-loader-overlay">
+                                    <div class="loader-spinner-small"></div>
+                                    <div class="loader-text-small">Loading Image</div>
+                                </div>
+                                <img src="product/wall-art/custom/special/1/images/1/2/mock-2.jpg" alt="Vision Board 4"
+                                    class="scroll-img">
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="scroll-item">
+                        <a href="https://fegoprint.info/product/wall-art/custom/special/1/" class="card-link">
+                            <div class="card-custom" style="background: rgba(255, 255, 255, 0.15); 
+                    backdrop-filter: blur(12px); 
+                    -webkit-backdrop-filter: blur(12px); 
+                    border: 1px solid rgba(255, 255, 255, 0.4); 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center; 
+                    min-height: 300px;
+                    box-shadow: none;">
+                                <div class="text-center p-4">
+                                    <h3
+                                        style="color: var(--brand-blue); font-weight: 700; font-size: 2.5rem; margin-bottom: 0.5rem;">
+                                        +6
+                                    </h3>
+                                    <p
+                                        style="color: var(--text-dark); font-weight: 600; font-size: 1.1rem; line-height: 1.2; margin-bottom: 0.8rem;">
+                                        More Vision Board<br>Templates
+                                    </p>
+                                    <span
+                                        style="color: var(--brand-green); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        View All &rarr;
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <button class="nav-arrow arrow-right" aria-label="Scroll right"
+                    onclick="event.preventDefault();">&#10095;</button>
+            </div>
+
+            <div class="segment-cta-container">
+                <a href="https://fegoprint.info/product/wall-art/custom/special/1/" class="segment-cta-btn">
+                    Explore Vision Boards
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+
+        <section class="mb-5 pb-5">
+            <div class="section-header text-center">
+                <h2 class="section-title">Keep Calm & Stay Happy Poster</h2>
+                <p class="section-subtitle">
+                    Instant Digital Download & Order For Physical Delivery - Both Option Available
+                </p>
+
+
+            </div>
+
+            <div class="scroll-container-relative">
+                <button class="nav-arrow arrow-left hidden" aria-label="Scroll left"
+                    onclick="event.preventDefault();">&#10094;</button>
+                <div class="image-scroll-wrapper">
+                    <div class="scroll-item">
+
+                        <div class="card-custom">
+                            <div class="image-loader-overlay">
+                                <div class="loader-spinner-small"></div>
+                                <div class="loader-text-small">Loading Image</div>
+                            </div>
+                            <img src="product/wall-art/pre-made/designs/1/images/1.png" alt="Vision Board 1"
+                                class="scroll-img">
+                        </div>
+
+                    </div>
+                    <div class="scroll-item">
+
+                        <div class="card-custom">
+                            <div class="image-loader-overlay">
+                                <div class="loader-spinner-small"></div>
+                                <div class="loader-text-small">Loading Image</div>
+                            </div>
+                            <img src="product/wall-art/pre-made/designs/1/images/2.png" alt="Vision Board 2"
+                                class="scroll-img">
+                        </div>
+
+                    </div>
+                    <div class="scroll-item">
+
+                        <div class="card-custom">
+                            <div class="image-loader-overlay">
+                                <div class="loader-spinner-small"></div>
+                                <div class="loader-text-small">Loading Image</div>
+                            </div>
+                            <img src="product/wall-art/pre-made/designs/1/images/3.png" alt="Vision Board 3"
+                                class="scroll-img">
+                        </div>
+
+                    </div>
+                    <div class="scroll-item">
+
+                        <div class="card-custom">
+                            <div class="image-loader-overlay">
+                                <div class="loader-spinner-small"></div>
+                                <div class="loader-text-small">Loading Image</div>
+                            </div>
+                            <img src="product/wall-art/pre-made/designs/1/images/4.png" alt="Vision Board 4"
+                                class="scroll-img">
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <button class="nav-arrow arrow-right" aria-label="Scroll right"
+                    onclick="event.preventDefault();">&#10095;</button>
+            </div>
+
+            <div class="segment-cta-container">
+                <a href="https://fegoprint.info/product/wall-art/pre-made/landing/page-1.html" class="segment-cta-btn">
+                    See This Poster
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+
+        <section class="mb-5 pb-5">
+            <div class="section-header text-center">
+                <h2 class="section-title">Posters For Home Decor</h2>
+                <p class="section-subtitle">
+                    Browse Visual Appealing Posters for Home Decor.
+                </p>
+
+
+            </div>
+
+            <div class="scroll-container-relative">
+                <button class="nav-arrow arrow-left hidden" aria-label="Scroll left"
+                    onclick="event.preventDefault();">&#10094;</button>
+                <div class="image-scroll-wrapper">
+
+                    <div class="scroll-item">
+                        <a href="https://fegoprint.info/product/wall-art/pre-made/landing/page-1.html?design=7" class="card-link">
+                            <div class="card-custom">
+                                <div class="image-loader-overlay">
+                                    <div class="loader-spinner-small"></div>
+                                    <div class="loader-text-small">Loading Image</div>
+                                </div>
+                                <img src="product/wall-art/pre-made/designs/7/images/1.png" alt="Vision Board 2"
+                                    class="scroll-img">
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="scroll-item">
+
+                        <a href="https://fegoprint.info/product/wall-art/pre-made/landing/page-1.html?design=2" class="card-link">
+                            <div class="card-custom">
+                                <div class="image-loader-overlay">
+                                    <div class="loader-spinner-small"></div>
+                                    <div class="loader-text-small">Loading Image</div>
+                                </div>
+                                <img src="product/wall-art/pre-made/designs/2/images/1.png" alt="Vision Board 2"
+                                    class="scroll-img">
+                            </div>
+                        </a>
+
+                    </div>
+
+                    <div class="scroll-item">
+                        <a href="https://fegoprint.info/product/wall-art/pre-made/landing/page-1.html" class="card-link">
+                            <div class="card-custom">
+                                <div class="image-loader-overlay">
+                                    <div class="loader-spinner-small"></div>
+                                    <div class="loader-text-small">Loading Image</div>
+                                </div>
+                                <img src="product/wall-art/pre-made/designs/1/images/1.png" alt="Vision Board 1"
+                                    class="scroll-img">
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="scroll-item">
+
+                        <a href="https://fegoprint.info/product/wall-art/pre-made/landing/page-1.html?design=3" class="card-link">
+                            <div class="card-custom">
+                                <div class="image-loader-overlay">
+                                    <div class="loader-spinner-small"></div>
+                                    <div class="loader-text-small">Loading Image</div>
+                                </div>
+                                <img src="product/wall-art/pre-made/designs/3/images/1.png" alt="Vision Board 2"
+                                    class="scroll-img">
+                            </div>
+                        </a>
+
+                    </div>
+
+
+                    <div class="scroll-item">
+                        <a href="https://fegoprint.info/product/wall-art/pre-made/" class="card-link">
+                            <div class="card-custom" style="background: rgba(255, 255, 255, 0.15); 
+                    backdrop-filter: blur(12px); 
+                    -webkit-backdrop-filter: blur(12px); 
+                    border: 1px solid rgba(255, 255, 255, 0.4); 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center; 
+                    min-height: 300px;
+                    box-shadow: none;">
+                                <div class="text-center p-4">
+                                    <h3
+                                        style="color: var(--brand-blue); font-weight: 700; font-size: 2.5rem; margin-bottom: 0.5rem;">
+                                        +4
+                                    </h3>
+                                    <p
+                                        style="color: var(--text-dark); font-weight: 600; font-size: 1.1rem; line-height: 1.2; margin-bottom: 0.8rem;">
+                                        More Poster Designs
+                                    </p>
+                                    <span
+                                        style="color: var(--brand-green); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        View All &rarr;
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+
+                </div>
+                <button class="nav-arrow arrow-right" aria-label="Scroll right"
+                    onclick="event.preventDefault();">&#10095;</button>
+            </div>
+
+            <div class="segment-cta-container">
+                <a href="https://fegoprint.info/product/wall-art/pre-made/" class="segment-cta-btn">
+                    Explore Posters
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </a>
+            </div>
+
+
+        </section>
+
+
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="nav.js"></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section.mb-5');
+
+            sections.forEach(section => {
+                // 1. Get the link from the CTA button in this section
+                const ctaBtn = section.querySelector('.segment-cta-btn');
+                if (!ctaBtn) return;
+
+                const sectionUrl = ctaBtn.getAttribute('href');
+                const scrollItems = section.querySelectorAll('.scroll-item');
+
+                scrollItems.forEach(item => {
+                    // 2. CRITICAL: Only proceed if there is NO <a> tag inside this scroll-item
+                    const existingLink = item.querySelector('a');
+
+                    if (!existingLink) {
+                        // Apply cursor pointer to indicate it's clickable
+                        item.style.cursor = 'pointer';
+
+                        // 3. Assign the click event to the div
+                        item.addEventListener('click', () => {
+                            window.location.href = sectionUrl;
+                        });
+
+                        // 4. Manual Hover Effect (replicates your CSS .card-custom:hover)
+                        const card = item.querySelector('.card-custom');
+                        if (card) {
+                            item.addEventListener('mouseenter', () => {
+                                card.style.transform = 'translateY(-8px)';
+                                card.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1)';
+                            });
+                            item.addEventListener('mouseleave', () => {
+                                card.style.transform = 'none';
+                                card.style.boxShadow = 'none';
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Per-image Loading Logic
+            const images = document.querySelectorAll('.scroll-img');
+            images.forEach(img => {
+                const overlay = img.previousElementSibling; // The .image-loader-overlay
+
+                const handleLoad = () => {
+                    img.classList.add('loaded');
+                    if (overlay) {
+                        overlay.style.opacity = '0';
+                        setTimeout(() => overlay.remove(), 300);
+                    }
+                };
+
+                if (img.complete) {
+                    handleLoad();
+                } else {
+                    img.addEventListener('load', handleLoad);
+                    // Handle broken images
+                    img.addEventListener('error', () => {
+                        if (overlay) {
+                            overlay.querySelector('.loader-spinner-small').style.display = 'none';
+                            overlay.querySelector('.loader-text-small').innerText = 'Error Loading';
+                        }
+                    });
+                }
+            });
+        });
+
+        // Navigation visibility logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.querySelector('.fixed-nav');
+            const navDiv = document.querySelector('.navdiv');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        navDiv.classList.add('show-nav');
+                    } else {
+                        navDiv.classList.remove('show-nav');
+                    }
+                });
+            }, { threshold: 0 });
+
+            if (header && navDiv) { observer.observe(header); }
+
+            // Scroll components logic
+            const scrollSections = document.querySelectorAll('section.mb-5');
+
+            scrollSections.forEach(section => {
+                const wrapper = section.querySelector('.image-scroll-wrapper');
+                const leftBtn = section.querySelector('.arrow-left');
+                const rightBtn = section.querySelector('.arrow-right');
+
+                if (!wrapper || !leftBtn || !rightBtn) return;
+
+                const updateArrows = () => {
+                    const scrollLeft = wrapper.scrollLeft;
+                    const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
+                    const hasOverflow = wrapper.scrollWidth > wrapper.clientWidth + 5;
+
+                    // Centering/Overflow logic
+                    if (hasOverflow) {
+                        wrapper.classList.add('has-overflow');
+                    } else {
+                        wrapper.classList.remove('has-overflow');
+                    }
+
+                    // Arrows visibility logic
+                    if (!hasOverflow) {
+                        leftBtn.classList.add('hidden');
+                        rightBtn.classList.add('hidden');
+                        return;
+                    }
+
+                    if (scrollLeft <= 10) {
+                        leftBtn.classList.add('hidden');
+                    } else {
+                        leftBtn.classList.remove('hidden');
+                    }
+
+                    if (scrollLeft >= maxScroll - 10) {
+                        rightBtn.classList.add('hidden');
+                    } else {
+                        rightBtn.classList.remove('hidden');
+                    }
+                };
+
+                leftBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const cardWidth = wrapper.querySelector('.scroll-item').offsetWidth + 24;
+                    wrapper.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+                });
+
+                rightBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const cardWidth = wrapper.querySelector('.scroll-item').offsetWidth + 24;
+                    wrapper.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                });
+
+                wrapper.addEventListener('scroll', updateArrows);
+                window.addEventListener('resize', updateArrows);
+
+                setTimeout(updateArrows, 500);
+            });
+        });
+    </script>
+</body>
+
+</html>

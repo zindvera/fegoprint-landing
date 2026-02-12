@@ -1,0 +1,1 @@
+const lastDesign = 2; // Update this number manually when adding new designs

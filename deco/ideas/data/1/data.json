@@ -1,0 +1,39 @@
+{
+  "title": "Modern Living Room Ideas",
+  "ideas": [
+    {
+      "image": "1.jpg",
+      "products": [
+        {
+          "name": "Velvet Sectional Sofa",
+          "image": "product-1.jpg",
+          "url": "https://amazon.com/sofa-123",
+          "platform": "Amazon"
+        }
+      ]
+    },
+    {
+      "image": "2.jpg",
+      "products": [
+        {
+          "name": "Coffee Table Set",
+          "image": "product-2.jpg",
+          "url": "https://amazon.com/table-202",
+          "platform": "Amazon"
+        },
+        {
+          "name": "Ceramic Vase",
+          "image": "product-3.jpg",
+          "url": "https://redbubble.com/vase-303",
+          "platform": "Redbubble"
+        },
+        {
+          "name": "Ceramic",
+          "image": "product-4.jpg",
+          "url": "https://redbubble.com/vase-303",
+          "platform": "Redbubble"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ebooks - FegoPrint</title>
+    <style>
+        :root {
+            --bg-light: #fafafa;
+            --bg-card: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #5d6d7e;
+            --accent: #2e7d32;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        header {
+            padding: 3rem 1.5rem;
+            text-align: center;
+            background: white;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: #1a252f;
+            letter-spacing: -0.02em;
+        }
+
+        header p {
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem 4rem;
+        }
+
+        #listing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .design-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #f0f0f0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .design-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent);
+        }
+
+        .thumb-wrapper {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: #eee;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .thumb-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card-content {
+            padding: 1.25rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1a252f;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 3rem;
+            gap: 1rem;
+        }
+
+        .page-link {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--bg-card);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .page-link:hover:not(.disabled) {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .page-link.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .page-info {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        footer {
+            padding: 2rem 0;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #4b5563;
+            background: linear-gradient(90deg,#e7f7ec,#f3f4f6);
+            border-top: 1px solid #d1d5db;
+        }
+
+        .loading-state {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 4rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+  <div class="navdiv" style="margin-bottom: 0.25in;"></div>
+    <header>
+        <h1>Ebooks</h1>
+        <p>Explore ebooks with clear ‘what you’ll get’ benefits on every landing page</p>
+    </header>
+
+    <main class="gallery-container">
+        <div id="listing-grid">
+            <div class="loading-state">Loading designs...</div>
+        </div>
+
+        <nav class="pagination" id="pagination-controls" style="display: none;">
+            <a id="prev-btn" class="page-link">Previous</a>
+            <span class="page-info" id="page-display">Page 1</span>
+            <a id="next-btn" class="page-link">Next</a>
+        </nav>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 FegoPrint. All rights reserved.</p>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="../../../nav.js"></script>
+    <script>
+        const ITEMS_PER_PAGE = 1;
+        let validDesigns = [];
+
+        /**
+         * Verifies if a design exists and fetches its title
+         */
+        async function getPageData(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) return null;
+                const text = await response.text();
+                const doc = new DOMParser().parseFromString(text, 'text/html');
+                return {
+                    title: doc.querySelector('title')?.innerText || "Ebook Design",
+                    exists: true
+                };
+            } catch (e) {
+                return null;
+            }
+        }
+
+        /**
+         * Checks which thumbnail extension exists
+         */
+        async function getThumbnailPath(folderPath) {
+            const extensions = ['jpg', 'png'];
+            for (const ext of extensions) {
+                const path = `${folderPath}/media/featured-1.${ext}`;
+                try {
+                    const response = await fetch(path, { method: 'HEAD' });
+                    if (response.ok) return path;
+                } catch (e) {}
+            }
+            return null;
+        }
+
+        /**
+         * First pass: Scan all possible designs from lastDesign down to 1
+         */
+        async function scanDesigns() {
+            const totalRange = typeof lastDesign !== 'undefined' ? lastDesign : 0;
+            const confirmed = [];
+
+            for (let i = totalRange; i >= 1; i--) {
+                const folderPath = `content/${i}`;
+                const indexPath = `${folderPath}/index.html`;
+                
+                try {
+                    const response = await fetch(indexPath, { method: 'HEAD' });
+                    if (response.ok) {
+                        confirmed.push({
+                            id: i,
+                            folderPath: folderPath,
+                            indexPath: indexPath
+                        });
+                    }
+                } catch (e) {}
+            }
+            return confirmed;
+        }
+
+        /**
+         * Redirects to the target page by modifying the URL search parameters
+         */
+        function redirectToPage(page) {
+            const url = new URL(window.location);
+            url.searchParams.set('page', page);
+            window.location.href = url.toString();
+        }
+
+        /**
+         * Reads the page number from the URL
+         */
+        function getPageFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return parseInt(params.get('page')) || 1;
+        }
+
+        async function renderGallery(page) {
+            const grid = document.getElementById('listing-grid');
+            const paginationControls = document.getElementById('pagination-controls');
+
+            if (validDesigns.length === 0) {
+                grid.innerHTML = '<div class="loading-state">Scanning library...</div>';
+                validDesigns = await scanDesigns();
+            }
+
+            if (validDesigns.length === 0) {
+                grid.innerHTML = '<div class="loading-state">No active designs found in the directory.</div>';
+                paginationControls.style.display = 'none';
+                return;
+            }
+
+            const totalItems = validDesigns.length;
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+            
+            // Adjust page bounds
+            if (page > totalPages) page = totalPages;
+            if (page < 1) page = 1;
+
+            grid.innerHTML = '<div class="loading-state">Loading page ' + page + '...</div>';
+            
+            const startIdx = (page - 1) * ITEMS_PER_PAGE;
+            const endIdx = startIdx + ITEMS_PER_PAGE;
+            const pageItems = validDesigns.slice(startIdx, endIdx);
+
+            const tempFragment = document.createDocumentFragment();
+            let loadedInBatch = 0;
+
+            for (const design of pageItems) {
+                const data = await getPageData(design.indexPath);
+                const thumbPath = await getThumbnailPath(design.folderPath);
+                const finalThumb = thumbPath || `https://via.placeholder.com/400?text=Design+${design.id}`;
+
+                const card = document.createElement('a');
+                card.href = design.indexPath;
+                card.className = 'design-card';
+                card.style.animationDelay = `${loadedInBatch * 0.1}s`;
+                
+                card.innerHTML = `
+                    <div class="thumb-wrapper">
+                        <img src="${finalThumb}" alt="${data?.title || 'Ebook'}">
+                    </div>
+                    <div class="card-content">
+                        <p class="card-title">${data?.title || ('Template #' + design.id)}</p>
+    
+                    </div>
+                `;
+
+                tempFragment.appendChild(card);
+                loadedInBatch++;
+            }
+
+            grid.innerHTML = '';
+            grid.appendChild(tempFragment);
+
+            updatePaginationUI(totalPages, page);
+        }
+
+        function updatePaginationUI(totalPages, page) {
+            const paginationControls = document.getElementById('pagination-controls');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const pageDisplay = document.getElementById('page-display');
+
+            if (totalPages <= 1) {
+                paginationControls.style.display = 'none';
+                return;
+            }
+
+            paginationControls.style.display = 'flex';
+            pageDisplay.innerText = `Page ${page} of ${totalPages}`;
+
+            // Handle Previous state
+            if (page === 1) {
+                prevBtn.classList.add('disabled');
+                prevBtn.onclick = null;
+            } else {
+                prevBtn.classList.remove('disabled');
+                prevBtn.onclick = (e) => {
+                    e.preventDefault();
+                    redirectToPage(page - 1);
+                };
+            }
+
+            // Handle Next state
+            if (page >= totalPages) {
+                nextBtn.classList.add('disabled');
+                nextBtn.onclick = null;
+            } else {
+                nextBtn.classList.remove('disabled');
+                nextBtn.onclick = (e) => {
+                    e.preventDefault();
+                    redirectToPage(page + 1);
+                };
+            }
+        }
+
+        window.onload = () => {
+            renderGallery(getPageFromURL());
+        };
+    </script>
+</body>
+</html>

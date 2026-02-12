@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FegoPrint - Customize Your Phone Case</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --fego-primary: #008080;
+            /* Professional Teal */
+            --fego-primary-hover: #006666;
+            --fego-bg-light: #fdfdfd;
+            --fego-text: #2d3436;
+            --fego-text-muted: #636e72;
+        }
+
+        html,
+        body {
+            max-width: 100%;
+            overflow-x: hidden;
+            /* Prevents horizontal scroll on mobile */
+        }
+
+        body {
+            background-color: var(--fego-bg-light);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--fego-text);
+            line-height: 1.6;
+        }
+
+        /* Hero Row Styling */
+        .hero-section {
+            padding: 4rem 0;
+        }
+
+        /* Responsive Mockup Container with 10px Margin */
+        .mockup-wrapper {
+            position: relative;
+            width: calc(100% - 20px);
+            background-color: #f1f2f6;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin: 10px auto;
+            transition: transform 0.3s ease;
+        }
+
+        .mockup-wrapper img {
+            display: block;
+            width: 100%;
+            height: auto;
+            transition: transform 0.5s ease;
+        }
+
+        .mockup-wrapper:hover img {
+            transform: scale(1.03);
+        }
+
+        /* Buttons */
+        .btn-fego {
+            background-color: var(--fego-primary);
+            color: #fff;
+            padding: 1.2rem 3.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            border-radius: 60px;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0, 128, 128, 0.2);
+        }
+
+        .btn-fego:hover {
+            background-color: var(--fego-primary-hover);
+            color: #fff;
+            box-shadow: 0 8px 25px rgba(0, 128, 128, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* Gallery Text Styling */
+        .gallery-text-block {
+            margin: 4rem 0 2rem;
+        }
+
+        .edit-text {
+            font-size: 25px;
+            color: var(--fego-text-muted);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .example-text {
+            font-size: 30px;
+            color: var(--fego-text);
+            font-weight: 700;
+        }
+
+        /* Caption Styling */
+        .caption-text {
+            font-size: 0.9rem;
+            color: var(--fego-text-muted);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Other Devices Section */
+        .other-devices-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--fego-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .other-devices-sub {
+            font-size: 1.1rem;
+            color: var(--fego-text-muted);
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
+
+        /* Floating CTA Behavior */
+        .floating-cta {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 1050;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .floating-cta.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        /* MEDIA QUERIES */
+        @media (max-width: 575.98px) {
+            .hero-section {
+                padding: 2rem 0;
+            }
+
+            .hero-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .edit-text {
+                font-size: 20px;
+            }
+
+            .example-text {
+                font-size: 24px;
+            }
+
+            .btn-fego {
+                padding: 1rem 2.5rem;
+                font-size: 1.1rem;
+            }
+
+            .other-devices-title {
+                font-size: 1.5rem;
+            }
+
+            .floating-cta {
+                bottom: 0;
+                right: 0;
+                left: 0;
+                padding: 1.2rem;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
+                border-top: 1px solid #eee;
+                box-sizing: border-box;
+            }
+
+            .floating-cta .btn-fego {
+                width: 100%;
+                text-align: center;
+                border-radius: 12px;
+                padding: 1.2rem;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .hero-section {
+                padding: 5rem 0;
+            }
+
+            .content-block {
+                padding-left: 2rem;
+            }
+
+            .mockup-wrapper {
+                margin: 15px auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="container hero-section">
+        <div class="row align-items-center g-4">
+            <!-- Left: Primary Product Mockup -->
+            <div class="col-12 col-md-6">
+                <div class="mockup-wrapper">
+                    <img src="https://images.placeholders.dev/?width=800&height=1200&text=Main+Product&theme=light"
+                        alt="Zazzle Phone Case Base" class="img-fluid">
+                </div>
+            </div>
+
+            <!-- Right: Sales Content -->
+            <div class="col-12 col-md-6">
+                <div class="content-block text-center text-md-start">
+                    <h2 class="fw-bold mb-4">Personalize with your own text</h2>
+                    <a href="https://www.zazzle.com/product_slug?rf=YOUR_AMBASSADOR_ID" target="_blank" id="hero-cta"
+                        class="btn-fego">
+                        Customize on Zazzle
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Introduction Section -->
+        <div class="text-center">
+            <div class="gallery-text-block">
+                <p class="edit-text">You can edit the text & font design</p>
+                <p class="example-text">For Example</p>
+            </div>
+        </div>
+
+        <!-- Mockup Grid: Example Section -->
+        <div class="row g-0 justify-content-center">
+            <div class="col-12 col-sm-6 col-lg-4 text-center">
+                <div class="mockup-wrapper">
+                    <img src="https://images.placeholders.dev/?width=600&height=900&text=vineet&theme=dark"
+                        alt="Sample Vineet">
+                </div>
+                <p class="caption-text">“vineet”</p>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4 text-center">
+                <div class="mockup-wrapper">
+                    <img src="https://images.placeholders.dev/?width=600&height=900&text=dream+big&theme=dark"
+                        alt="Sample Dream Big">
+                </div>
+                <p class="caption-text">“dream big”</p>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4 text-center">
+                <div class="mockup-wrapper">
+                    <img src="https://images.placeholders.dev/?width=600&height=900&text=sarah&theme=dark"
+                        alt="Sample Sarah">
+                </div>
+                <p class="caption-text">“sarah”</p>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="my-5 opacity-25">
+
+        <!-- Other Devices Section -->
+        <div class="row mb-3">
+            <div class="col-12 text-start">
+                <h3 class="other-devices-title">Other Devices</h3>
+                <p class="other-devices-sub">Available case designs for all major phone models including iPhone,
+                    Samsung, and more.</p>
+            </div>
+        </div>
+
+        <!-- Other Devices Cards Grid -->
+        <div class="row g-0 justify-content-center">
+            <div class="col-12 col-sm-6 col-lg-4 text-center">
+                <div class="mockup-wrapper">
+                    <img src="https://images.placeholders.dev/?width=600&height=900&text=iPhone+Model&theme=light"
+                        alt="iPhone Case">
+                </div>
+                <p class="caption-text">iPhone Cases</p>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4 text-center">
+                <div class="mockup-wrapper">
+                    <img src="https://images.placeholders.dev/?width=600&height=900&text=Samsung+Model&theme=light"
+                        alt="Samsung Case">
+                </div>
+                <p class="caption-text">Samsung Cases</p>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4 text-center">
+                <div class="mockup-wrapper">
+                    <img src="https://images.placeholders.dev/?width=600&height=900&text=Google+Pixel&theme=light"
+                        alt="Pixel Case">
+                </div>
+                <p class="caption-text">Pixel Cases</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating CTA -->
+    <div id="floating-cta-container" class="floating-cta">
+        <a href="https://www.zazzle.com/product_slug?rf=YOUR_AMBASSADOR_ID" target="_blank" class="btn-fego shadow-lg">
+            Customize on Zazzle
+        </a>
+    </div>
+
+    <!-- Behavior Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const heroCta = document.getElementById('hero-cta');
+            const floatingContainer = document.getElementById('floating-cta-container');
+
+            const observerOptions = {
+                root: null,
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        floatingContainer.classList.add('visible');
+                    } else {
+                        floatingContainer.classList.remove('visible');
+                    }
+                });
+            }, observerOptions);
+
+            if (heroCta) {
+                observer.observe(heroCta);
+            }
+        });
+    </script>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
