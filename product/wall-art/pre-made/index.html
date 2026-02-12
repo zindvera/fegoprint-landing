@@ -4,7 +4,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
   <title>Wall Arts | FegoPrint</title>
   <link rel="icon" type="image/png" sizes="32x32" href="../../../media/favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="../../../media/favicon/favicon-16x16.png">
@@ -108,6 +107,29 @@
       display: none !important;
     }
 
+
+
+
+    /* Center the loader across all masonry columns */
+    #initial-list-loader {
+      column-span: all;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 2rem 0;
+    }
+
+    /* Ensure the loader uses your existing green spinner style */
+    #initial-list-loader .loader {
+      border: 6px solid #b6fad5;
+      border-top: 6px solid #01ce7f;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
     /* Phone view: width 100% (less than 600px) */
     @media (max-width: 599px) {
       #design-list {
@@ -141,7 +163,11 @@
   <div class="navdiv" style="margin-bottom: 0.6in;"></div>
   <div class="container my-4">
     <h1 class="mb-4 fs-2">Wall Arts</h1><br>
-    <div id="design-list"></div>
+    <div id="design-list">
+      <div id="initial-list-loader">
+        <div class="loader"></div>
+      </div>
+    </div>
 
     <div id="pagination" class="d-flex justify-content-center mt-4">
       <button id="prev-btn" class="btn btn-primary me-2">Previous</button>
@@ -217,11 +243,9 @@
 
     async function renderPage(page) {
       const container = document.getElementById('design-list');
-      container.innerHTML = '';
-
       const totalPages = Math.ceil(availableDesigns.length / designsPerPage);
 
-      // Pagination buttons
+      // Update Pagination buttons visibility
       const prevBtn = document.getElementById('prev-btn');
       prevBtn.classList.toggle('hidden', page <= 1);
 
@@ -236,16 +260,25 @@
         return;
       }
 
+      // Flag to check if it's the first card being added
+      let isFirstCard = true;
+
       for (const designNum of pageDesigns) {
         try {
-          // Get title from data.json
           const res = await fetch(`designs/${designNum}/data.json`);
           if (res.ok) {
-            const data = await res.json();
+            const dataArray = await res.json();
+            const data = Array.isArray(dataArray) ? dataArray[0] : dataArray;
+
             const title = data.title || `Design ${designNum}`;
             const imgSrc = await getRandomPreviewImage(designNum);
 
-            // CHANGED: landing/page-1.html?d=n instead of index.html
+            // If this is the first successful card, clear the loader/previous content
+            if (isFirstCard) {
+              container.innerHTML = '';
+              isFirstCard = false;
+            }
+
             container.insertAdjacentHTML('beforeend', createDesignCard(title, imgSrc, designNum));
           }
         } catch (error) {
@@ -253,6 +286,7 @@
         }
       }
     }
+
 
     // 4. UPDATED: createDesignCard with landing/page-1.html?d=n
     function createDesignCard(title, imageSrc, designNum) {

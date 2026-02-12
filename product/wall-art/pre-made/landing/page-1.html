@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
     <title>Pre-made Wall Art Landing</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -876,7 +875,6 @@
         // Immediately nullify price on load to prevent flash of default text
         document.getElementById('priceValue').innerText = "";
 
-    
         async function fetchDesignData() {
             try {
                 const [designRes, brandsRes] = await Promise.all([
@@ -900,84 +898,86 @@
                     }
                 }
 
-                // --- 2. AVAILABILITY & RESPONSIVE BADGE ---
+                // --- 2. AVAILABILITY LOGIC ---
                 const digitalAvailable = designData.digital_availability !== "no";
                 const physicalAvailable = designData.physical_availability !== "no";
                 const switcherContainer = document.querySelector('.format-switcher');
-
-                if (digitalAvailable !== physicalAvailable) {
-                    const icon = digitalAvailable ? 'fa-download' : 'fa-truck';
-                    const label = digitalAvailable ? 'Instant Digital' : 'Physical Poster';
-                    
-                    if (switcherContainer) {
-                        // We use a CSS class or direct style adjustment for responsiveness
-                        switcherContainer.innerHTML = `
-                            <div class="format-badge" style="
-                                background: #ffffff; 
-                                border: 1px solid #dee2e6; 
-                                color: #495057; 
-                                padding: 10px 24px; 
-                                border-radius: 100px; 
-                                font-weight: 700; 
-                                font-size: 0.95rem; 
-                                display: flex; 
-                                align-items: center; 
-                                gap: 10px; 
-                                box-shadow: 0 2px 8px rgba(0,0,0,0.04); 
-                                width: fit-content; 
-                                cursor: default;
-                            ">
-                                <i class="fas ${icon}" style="color: #0d6efd;"></i>
-                                ${label}
-                            </div>
-                        `;
-
-                        // Apply Responsive Alignment via JS
-                        const updateAlignment = () => {
-                            if (window.innerWidth <= 767.98) {
-                                switcherContainer.style.justifyContent = "center";
-                                switcherContainer.querySelector('.format-badge').style.margin = "0 auto";
-                            } else {
-                                switcherContainer.style.justifyContent = "flex-start";
-                                switcherContainer.querySelector('.format-badge').style.margin = "0";
-                            }
-                        };
-
-                        // Run on load and on resize
-                        updateAlignment();
-                        window.addEventListener('resize', updateAlignment);
-                        
-                        switcherContainer.style.maxWidth = "100%";
-                        switcherContainer.style.display = "flex";
-                    }
-                }
 
                 // Global Unavailable Alert
                 if (!digitalAvailable && !physicalAvailable) {
                     const actions = document.querySelector('.hero-actions');
                     if (actions) {
                         actions.innerHTML = `
-                            <div class="alert alert-warning border-0 shadow-sm p-4 text-center" style="border-radius: 20px; width: 100%;">
-                                <i class="fas fa-exclamation-circle mb-2" style="font-size: 2rem; color: #856404;"></i>
-                                <h4 class="fw-bold">Product Not Available</h4>
-                                <p class="mb-0">This design is currently not available for purchase.</p>
-                            </div>`;
+                    <div class="alert alert-warning border-0 shadow-sm p-4 text-center" style="border-radius: 20px; width: 100%;">
+                        <i class="fas fa-exclamation-circle mb-2" style="font-size: 2rem; color: #856404;"></i>
+                        <h4 class="fw-bold">Product Not Available</h4>
+                        <p class="mb-0">This design is currently not available for purchase.</p>
+                    </div>`;
                     }
                     return true;
                 }
 
-                // --- 3. DATA MAPPING ---
+                // Handle the Switcher UI (Show badge if only 1, show toggle if 2)
+                if (digitalAvailable !== physicalAvailable) {
+                    const icon = digitalAvailable ? 'fa-download' : 'fa-truck';
+                    const label = digitalAvailable ? 'Instant Digital' : 'Physical Poster';
+
+                    if (switcherContainer) {
+                        switcherContainer.innerHTML = `
+                    <div class="format-badge" style="
+                        background: #ffffff; 
+                        border: 1px solid #dee2e6; 
+                        color: #495057; 
+                        padding: 10px 24px; 
+                        border-radius: 100px; 
+                        font-weight: 700; 
+                        font-size: 0.95rem; 
+                        display: flex; 
+                        align-items: center; 
+                        gap: 10px; 
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.04); 
+                        width: fit-content; 
+                        cursor: default;
+                    ">
+                        <i class="fas ${icon}" style="color: #0d6efd;"></i>
+                        ${label}
+                    </div>
+                `;
+
+                        const updateAlignment = () => {
+                            if (window.innerWidth <= 767.98) {
+                                switcherContainer.style.justifyContent = "center";
+                                const badge = switcherContainer.querySelector('.format-badge');
+                                if (badge) badge.style.margin = "0 auto";
+                            } else {
+                                switcherContainer.style.justifyContent = "flex-start";
+                                const badge = switcherContainer.querySelector('.format-badge');
+                                if (badge) badge.style.margin = "0";
+                            }
+                        };
+                        updateAlignment();
+                        window.addEventListener('resize', updateAlignment);
+                    }
+                }
+
+                // --- 3. DATA MAPPING & FORCED CONTENT UPDATE ---
                 formats.digital.price = (designData.digital_price && designData.digital_price.trim() !== "") ? designData.digital_price : null;
                 formats.physical.price = (designData.physical_price && designData.physical_price.trim() !== "") ? designData.physical_price : null;
                 formats.digital.link = designData.digital_link || ctaUrl;
                 formats.physical.link = designData.physical_link || ctaUrl;
 
-                if (digitalAvailable) {
+                // Force the UI to load the correct format content
+                if (digitalAvailable && !physicalAvailable) {
                     switchFormat('digital');
-                } else if (physicalAvailable) {
+                } else if (!digitalAvailable && physicalAvailable) {
                     switchFormat('physical');
+                } else {
+                    // Both available: check URL param or default to digital
+                    const formatType = urlParams.get('type');
+                    switchFormat(formatType === 'physical' ? 'physical' : 'digital');
                 }
 
+                // Update Title
                 const titleElements = document.querySelectorAll('.hero-title');
                 const finalTitle = designData.title || "Wall Art Decor";
                 titleElements.forEach(el => el.innerText = finalTitle);
@@ -988,9 +988,8 @@
                 if (brandsRes.ok) brandsList = await brandsRes.json();
                 const trustLink = document.getElementById('trustLink');
                 const brandLogo = document.getElementById('brandLogo');
-                const ratingContainer = document.getElementById('ratingContainer');
-                const reviewCountText = document.getElementById('reviewCountText');
                 const starRow = document.getElementById('starRow');
+                const reviewCountText = document.getElementById('reviewCountText');
                 const brandRatingsLabel = document.getElementById('brandRatingsLabel');
 
                 const matchedBrand = brandsList.find(b => ctaUrl.toLowerCase().includes(b.domain.toLowerCase()));
@@ -1014,7 +1013,7 @@
             }
         }
 
-        
+
         function switchFormat(type) {
             const data = formats[type];
             const platformText = platformName || "Store";
@@ -1322,9 +1321,44 @@
             document.body.style.overflow = 'hidden';
             resetZoom();
             if (autoSlideTimer) clearInterval(autoSlideTimer);
+
+            // --- NEW: Push a state so the back button closes the modal ---
+            if (window.history.pushState) {
+                window.history.pushState({ modalOpen: true }, "");
+            }
         }
 
-        function closeModal() { document.getElementById('img-modal-overlay').classList.remove('active'); document.body.style.overflow = ''; startAutoSlide(); }
+
+        function closeModal() {
+            const modal = document.getElementById('img-modal-overlay');
+            if (!modal.classList.contains('active')) return; // Already closed
+
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            startAutoSlide();
+
+            // --- NEW: If modal was closed via "X" button, sync history ---
+            // This prevents having to click "back" twice later
+            if (window.history.state && window.history.state.modalOpen) {
+                window.history.back();
+            }
+        }
+
+
+        // Detect the browser back button
+        window.addEventListener('popstate', function (event) {
+            const modal = document.getElementById('img-modal-overlay');
+
+            // If the modal is active and the user went "back", close it
+            if (modal.classList.contains('active')) {
+                // We pass 'false' or handle it carefully to avoid infinite history loops
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+                startAutoSlide();
+            }
+        });
+
+
         function resetZoom() { zoomLevel = 1; translateX = 0; translateY = 0; updateZoomTransform(); }
         function updateZoomTransform() {
             const modalImg = document.getElementById('modal-zoom-img');
