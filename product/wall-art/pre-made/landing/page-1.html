@@ -533,6 +533,26 @@
         }
 
 
+        .format-badge {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            padding: 10px 24px;
+            border-radius: 100px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            width: fit-content;
+        }
+
+        @media (max-width: 767.98px) {
+            .format-switcher {
+                justify-content: center !important;
+            }
+        }
+
+
         /* Responsive Breakpoints */
         @media (max-width: 991.98px) {
             .hero-title {
@@ -568,7 +588,7 @@
             }
 
             .trust-badge-block {
-                margin: 20px auto 0 auto;
+                margin: 20px auto 25px auto;
             }
 
             .process-steps {
@@ -648,19 +668,31 @@
                     <!-- Text Content -->
                     <div class="col-12 col-md-6 ps-lg-5">
 
-                        <!-- Dynamic Trust Badge Link -->
-                        <a id="trustLink" href="#" target="_blank" class="trust-badge-block">
-                            <img id="brandLogo" src="" alt="Brand Logo" class="brand-logo-img">
-                            <div class="rating-container" id="ratingContainer">
-                                <div class="star-row" id="starRow">
-                                    <!-- Ratings and stars loaded via JS -->
+
+                        <a id="trustLink" href="#" target="_blank" class="trust-badge-block"
+                            style="text-decoration: none;">
+                            <div id="brandTextContainer"
+                                style="display: flex; flex-direction: column; gap: 0; padding-right: 15px;">
+                                <span
+                                    style="font-size: 0.85rem; color: #272727; font-weight: 400; line-height: 1.2;">Available
+                                    on</span>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <span id="brandDomainDisplay"
+                                        style="font-size: 1.1rem; font-weight: 600; color: #0d6efd;"></span>
+                                    <i class="fas fa-external-link-alt"
+                                        style="font-size: 0.8rem; color: #0d6efd; opacity: 0.8;"></i>
                                 </div>
+                            </div>
+
+                            <div class="rating-container" id="ratingContainer">
+                                <div class="star-row" id="starRow"></div>
                                 <div class="rating-text">
-                                    <p style="margin:0;" id="brandRatingsLabel">Ratings</p>
+
                                     <h6 style="margin:0;" class="review-count" id="reviewCountText"></h6>
                                 </div>
                             </div>
                         </a>
+
 
                         <h1 class="hero-title d-none d-md-block"></h1>
 
@@ -822,22 +854,18 @@
 
 
         window.onload = async () => {
+            // 1. Fetch data first - this now handles the initial switchFormat call
             const success = await fetchDesignData();
             if (!success) {
                 showErrorPage();
                 return;
             }
+
+            // 2. Load visual assets
             await loadImages();
             await loadMockups();
 
-            // Logic to check for 'type' parameter
-            const formatType = urlParams.get('type');
-            if (formatType === 'physical') {
-                switchFormat('physical');
-            } else {
-                switchFormat('digital'); // Default behavior
-            }
-
+            // 3. Initialize UI components
             initModalEvents();
             initTouchSlider();
             startAutoSlide();
@@ -887,73 +915,55 @@
                 const designArray = await designRes.json();
                 const designData = Array.isArray(designArray) ? designArray[0] : designArray;
 
-                // --- 1. DOMAIN EXTRACTION & BRANDING ---
+                // --- 1. TITLE UPDATE (Guaranteed) ---
+                const finalTitle = designData.title || "Wall Art Decor";
+                document.title = finalTitle;
+                // Select all elements with class 'hero-title'
+                const titleElements = document.querySelectorAll('.hero-title');
+                titleElements.forEach(el => {
+                    el.innerText = finalTitle;
+                    el.classList.remove('d-none'); // Ensure it's not hidden by Bootstrap classes
+                });
+
+                // --- 2. DOMAIN EXTRACTION ---
                 const ctaUrl = designData.cta_url || "";
+                let fullDomain = "Store.com";
                 if (ctaUrl) {
                     try {
                         const urlObj = new URL(ctaUrl);
-                        const domain = urlObj.hostname.replace('www.', '').split('.')[0];
-                        platformName = domain.charAt(0).toUpperCase() + domain.slice(1);
+                        let hostname = urlObj.hostname.replace('www.', '');
+                        fullDomain = hostname.charAt(0).toUpperCase() + hostname.slice(1);
+                        platformName = hostname.split('.')[0].charAt(0).toUpperCase() + hostname.split('.')[0].slice(1);
                     } catch (e) {
-                        platformName = "Store";
+                        fullDomain = "Store.com";
                     }
                 }
 
-                // --- 2. AVAILABILITY LOGIC ---
+                // --- 3. AVAILABILITY LOGIC ---
                 const digitalAvailable = designData.digital_availability !== "no";
                 const physicalAvailable = designData.physical_availability !== "no";
                 const switcherContainer = document.querySelector('.format-switcher');
 
-                // Global Unavailable Alert
-                if (!digitalAvailable && !physicalAvailable) {
-                    const actions = document.querySelector('.hero-actions');
-                    if (actions) {
-                        actions.innerHTML = `
-                    <div class="alert alert-warning border-0 shadow-sm p-4 text-center" style="border-radius: 20px; width: 100%;">
-                        <i class="fas fa-exclamation-circle mb-2" style="font-size: 2rem; color: #856404;"></i>
-                        <h4 class="fw-bold">Product Not Available</h4>
-                        <p class="mb-0">This design is currently not available for purchase.</p>
-                    </div>`;
-                    }
-                    return true;
-                }
-
-                // Handle the Switcher UI (Show badge if only 1, show toggle if 2)
                 if (digitalAvailable !== physicalAvailable) {
                     const icon = digitalAvailable ? 'fa-download' : 'fa-truck';
                     const label = digitalAvailable ? 'Instant Digital' : 'Physical Poster';
 
                     if (switcherContainer) {
                         switcherContainer.innerHTML = `
-                    <div class="format-badge" style="
-                        background: #ffffff; 
-                        border: 1px solid #dee2e6; 
-                        color: #495057; 
-                        padding: 10px 24px; 
-                        border-radius: 100px; 
-                        font-weight: 700; 
-                        font-size: 0.95rem; 
-                        display: flex; 
-                        align-items: center; 
-                        gap: 10px; 
-                        box-shadow: 0 2px 8px rgba(0,0,0,0.04); 
-                        width: fit-content; 
-                        cursor: default;
-                    ">
+                    <div class="format-badge" id="availabilityBadge">
                         <i class="fas ${icon}" style="color: #0d6efd;"></i>
                         ${label}
-                    </div>
-                `;
+                    </div>`;
 
                         const updateAlignment = () => {
+                            const badge = document.getElementById('availabilityBadge');
+                            if (!badge) return;
                             if (window.innerWidth <= 767.98) {
                                 switcherContainer.style.justifyContent = "center";
-                                const badge = switcherContainer.querySelector('.format-badge');
-                                if (badge) badge.style.margin = "0 auto";
+                                badge.style.margin = "0 auto";
                             } else {
                                 switcherContainer.style.justifyContent = "flex-start";
-                                const badge = switcherContainer.querySelector('.format-badge');
-                                if (badge) badge.style.margin = "0";
+                                badge.style.margin = "0";
                             }
                         };
                         updateAlignment();
@@ -961,34 +971,24 @@
                     }
                 }
 
-                // --- 3. DATA MAPPING & FORCED CONTENT UPDATE ---
+                // --- 4. DATA MAPPING & INITIAL SWITCH ---
                 formats.digital.price = (designData.digital_price && designData.digital_price.trim() !== "") ? designData.digital_price : null;
                 formats.physical.price = (designData.physical_price && designData.physical_price.trim() !== "") ? designData.physical_price : null;
                 formats.digital.link = designData.digital_link || ctaUrl;
                 formats.physical.link = designData.physical_link || ctaUrl;
 
-                // Force the UI to load the correct format content
-                if (digitalAvailable && !physicalAvailable) {
-                    switchFormat('digital');
-                } else if (!digitalAvailable && physicalAvailable) {
-                    switchFormat('physical');
-                } else {
-                    // Both available: check URL param or default to digital
-                    const formatType = urlParams.get('type');
-                    switchFormat(formatType === 'physical' ? 'physical' : 'digital');
-                }
+                let initialType = (digitalAvailable && !physicalAvailable) ? 'digital' :
+                    (!digitalAvailable && physicalAvailable) ? 'physical' :
+                        (urlParams.get('type') === 'physical') ? 'physical' : 'digital';
 
-                // Update Title
-                const titleElements = document.querySelectorAll('.hero-title');
-                const finalTitle = designData.title || "Wall Art Decor";
-                titleElements.forEach(el => el.innerText = finalTitle);
-                document.title = finalTitle;
+                switchFormat(initialType);
 
-                // --- 4. BRAND TRUST BADGE ---
+                // --- 5. BRAND TRUST & DOMAIN DISPLAY ---
                 let brandsList = [];
                 if (brandsRes.ok) brandsList = await brandsRes.json();
+
                 const trustLink = document.getElementById('trustLink');
-                const brandLogo = document.getElementById('brandLogo');
+                const brandDomainDisplay = document.getElementById('brandDomainDisplay');
                 const starRow = document.getElementById('starRow');
                 const reviewCountText = document.getElementById('reviewCountText');
                 const brandRatingsLabel = document.getElementById('brandRatingsLabel');
@@ -998,11 +998,13 @@
                 if (matchedBrand) {
                     trustLink.style.display = 'flex';
                     trustLink.href = ctaUrl;
-                    brandLogo.src = matchedBrand.logo_src;
-                    brandRatingsLabel.innerText = `Ratings on ${matchedBrand.brand_name}`;
+                    if (brandDomainDisplay) brandDomainDisplay.innerText = fullDomain;
+
+
                     const fallback = matchedBrand.categories["posters"] || matchedBrand.categories["wall-art"] || {};
                     const finalRatings = designData.ratings ?? fallback.ratings;
                     const finalReviews = designData.reviews ?? fallback.reviews;
+
                     if (finalRatings) starRow.innerHTML = getStarsHtml(finalRatings);
                     if (finalReviews) reviewCountText.innerText = finalReviews + " reviews";
                 }
@@ -1014,7 +1016,6 @@
             }
         }
 
-
         function switchFormat(type) {
             const data = formats[type];
             const platformText = platformName || "Store";
@@ -1026,161 +1027,59 @@
             const priceContainer = document.getElementById('priceValueContainer');
             const floatingCTA = document.getElementById('floatingCTA');
 
-            // --- 1. TAB TOGGLE (Safety Check) ---
+            // Toggle active classes for switcher buttons (if they exist)
             const optDigital = document.getElementById('opt-digital');
             const optPhysical = document.getElementById('opt-physical');
-            if (optDigital && optPhysical) {
-                optDigital.classList.toggle('active', type === 'digital');
-                optPhysical.classList.toggle('active', type === 'physical');
-            }
+            if (optDigital) optDigital.classList.toggle('active', type === 'digital');
+            if (optPhysical) optPhysical.classList.toggle('active', type === 'physical');
 
             if (desc) desc.innerHTML = data.desc;
 
-            // --- 2. DUAL CHECKLIST CLARITY FEATURE ---
+            // Update Checklist Feature
             if (clarityContainer) {
+                const sizeText = type === 'digital' ? 'Multiple Sizes Available' : 'Multiple Sizes & Frames Available';
                 clarityContainer.style.display = 'flex';
                 clarityContainer.style.flexDirection = 'column';
                 clarityContainer.style.alignItems = 'flex-start';
-                clarityContainer.style.gap = '10px';
-                clarityContainer.style.padding = '1.25rem 1.5rem';
-                clarityContainer.style.borderLeft = '4px solid #0d6efd';
-
-                const sizeText = type === 'digital'
-                    ? 'Multiple Sizes Available'
-                    : 'Multiple Sizes & Frames Available';
+                clarityContainer.style.gap = '8px';
 
                 clarityContainer.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <i class="fas fa-circle-check" style="color: #198754; font-size: 1.2rem;"></i>
-                        <p class="clarity-text" style="margin: 0; font-weight: 700;">${data.clarity}</p>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <i class="fas fa-circle-check" style="color: #198754; font-size: 1.2rem;"></i>
-                        <p style="font-size: 1.1rem; font-weight: 700; color: #1a1a1a; margin: 0;">${sizeText}</p>
-                    </div>
-                `;
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-circle-check" style="color: #198754;"></i>
+                <p class="clarity-text" style="margin: 0;">${data.clarity}</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-circle-check" style="color: #198754;"></i>
+                <p style="font-size: 1.1rem; font-weight: 700; color: #1a1a1a; margin: 0;">${sizeText}</p>
+            </div>`;
             }
 
-            // --- 3. PROCESS STEPS ---
+            // Update Process Steps
             if (stepsContainer) {
-                let stepsHtml = '';
-                data.steps.forEach((step, idx) => {
-                    stepsHtml += `
-                        <div class="step-item">
-                            <div class="step-icon"><i class="fas ${step.icon}"></i></div>
-                            <span class="step-label">${step.label}</span>
-                        </div>`;
-                    if (idx < data.steps.length - 1) {
-                        stepsHtml += `<i class="fas fa-chevron-right step-arrow"></i>`;
-                    }
-                });
-                stepsContainer.innerHTML = stepsHtml;
-            }
-
-            // --- 4. CTA BUTTONS ---
-            const ctaLabel = `Shop on ${platformText}`;
-            if (heroCTA) {
-                heroCTA.innerText = ctaLabel;
-                heroCTA.href = data.link;
-            }
-            if (floatingCTA) {
-                floatingCTA.innerText = ctaLabel;
-                floatingCTA.href = data.link;
-            }
-
-            // --- 5. PRICE DISPLAY ---
-            if (data.price) {
-                if (priceContainer) {
-                    priceContainer.style.display = 'block';
-                    priceContainer.innerHTML = `Price: <span class="price-value">${data.price}</span>`;
-                }
-            } else {
-                if (priceContainer) priceContainer.style.display = 'none';
-            }
-        }
-
-
-        function switchFormat(type) {
-            const data = formats[type];
-            const platformText = platformName || "Store";
-
-            const desc = document.getElementById('formatDesc');
-            const clarityContainer = document.querySelector('.clarity-feature');
-            const stepsContainer = document.getElementById('processStepsContainer');
-            const heroCTA = document.getElementById('heroCTA');
-            const priceContainer = document.getElementById('priceValueContainer');
-            const floatingCTA = document.getElementById('floatingCTA');
-
-            // --- SAFETY: Only toggle 'active' class if both buttons exist ---
-            const totalOptions = document.querySelectorAll('.format-option').length;
-            const optDigital = document.getElementById('opt-digital');
-            const optPhysical = document.getElementById('opt-physical');
-
-            if (totalOptions > 1) {
-                if (optDigital) optDigital.classList.toggle('active', type === 'digital');
-                if (optPhysical) optPhysical.classList.toggle('active', type === 'physical');
-            }
-
-            if (desc) desc.innerHTML = data.desc;
-
-            // --- CHECKLIST CLARITY SECTION ---
-            if (clarityContainer) {
-                clarityContainer.style.display = 'flex';
-                clarityContainer.style.flexDirection = 'column';
-                clarityContainer.style.alignItems = 'flex-start';
-                clarityContainer.style.gap = '10px';
-                clarityContainer.style.padding = '1.25rem 1.5rem';
-
-                const sizeText = type === 'digital'
-                    ? 'Multiple Sizes Available'
-                    : 'Multiple Sizes & Frames Available';
-
-                clarityContainer.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <i class="fas fa-circle-check" style="color: #198754;"></i>
-                        <p class="clarity-text" style="margin: 0;">${data.clarity}</p>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <i class="fas fa-circle-check" style="color: #198754;"></i>
-                        <p style="font-size: 1.1rem; font-weight: 700; color: #1a1a1a; margin: 0;">${sizeText}</p>
-                    </div>`;
-            }
-
-            // Update Steps
-            if (stepsContainer) {
-                let stepsHtml = '';
-                data.steps.forEach((step, idx) => {
-                    stepsHtml += `
-                        <div class="step-item">
-                            <div class="step-icon"><i class="fas ${step.icon}"></i></div>
-                            <span class="step-label">${step.label}</span>
-                        </div>`;
-                    if (idx < data.steps.length - 1) stepsHtml += `<i class="fas fa-chevron-right step-arrow"></i>`;
-                });
-                stepsContainer.innerHTML = stepsHtml;
+                stepsContainer.innerHTML = data.steps.map((step, idx) => `
+            <div class="step-item">
+                <div class="step-icon"><i class="fas ${step.icon}"></i></div>
+                <span class="step-label">${step.label}</span>
+            </div>
+            ${idx < data.steps.length - 1 ? '<i class="fas fa-chevron-right step-arrow"></i>' : ''}
+        `).join('');
             }
 
             // Update CTA Buttons
-            if (heroCTA) {
-                heroCTA.innerText = `Shop on ${platformText}`;
-                heroCTA.href = data.link;
-            }
-            if (floatingCTA) {
-                floatingCTA.innerText = `Shop on ${platformText}`;
-                floatingCTA.href = data.link;
-            }
+            const label = `Shop on ${platformText}`;
+            if (heroCTA) { heroCTA.innerText = label; heroCTA.href = data.link; }
+            if (floatingCTA) { floatingCTA.innerText = label; floatingCTA.href = data.link; }
 
             // Update Price
-            if (data.price) {
-                if (priceContainer) {
+            if (priceContainer) {
+                if (data.price) {
                     priceContainer.style.display = 'block';
                     priceContainer.innerHTML = `Price: <span class="price-value">${data.price}</span>`;
+                } else {
+                    priceContainer.style.display = 'none';
                 }
-            } else {
-                if (priceContainer) priceContainer.style.display = 'none';
             }
         }
-
 
 
         function initCTAObserver() {

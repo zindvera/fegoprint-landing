@@ -531,6 +531,81 @@
             text-align: center;
         }
 
+
+        /* Availability Badge Styling */
+        .format-badge {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            color: #495057;
+            padding: 10px 24px;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            width: fit-content;
+            cursor: default;
+            transition: all 0.3s ease;
+        }
+
+        /* Domain Text and Icon Styling */
+        #brandTextContainer div {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Global Responsive Adjustments */
+        @media (max-width: 767.98px) {
+            .trust-badge-block {
+                justify-content: center !important;
+                width: 100%;
+                padding: 1.5rem 0 !important;
+                border-radius: 0;
+            }
+
+            #brandTextContainer {
+                text-align: center !important;
+                padding-right: 15px !important;
+            }
+
+            #brandTextContainer div {
+                justify-content: center;
+            }
+
+            .format-switcher {
+                justify-content: center !important;
+                margin: 2rem auto !important;
+            }
+
+            .price-display {
+                text-align: center !important;
+            }
+
+            .hero-title {
+                text-align: center !important;
+            }
+        }
+
+        /* Desktop Alignment */
+        @media (min-width: 768px) {
+            #brandTextContainer {
+                text-align: left !important;
+            }
+
+            .format-switcher {
+                justify-content: flex-start !important;
+            }
+
+            .trust-badge-block {
+                justify-content: flex-start !important;
+            }
+        }
+
+
+
         /* Mobile Adjustments */
         @media (max-width: 767.98px) {
 
@@ -647,9 +722,21 @@
                 <div class="mt-0 col-12 col-md-6 text-center text-md-start order-3 order-md-2 ps-lg-5">
 
                     <!-- Interactive Trust Badge Link -->
-                    <a id="trustLink" href="#" target="_blank" class="trust-badge-block">
-                        <img src="https://asset.zcache.com/assets/graphics/z4/uniquePages/zLogoDownload/logos/zazzleLetterform_black.png"
-                            alt="Zazzle" class="zazzle-logo">
+
+                    <a id="trustLink" href="#" target="_blank" class="trust-badge-block" style="text-decoration: none;">
+                        <div id="brandTextContainer"
+                            style="display: flex; flex-direction: column; gap: 0; padding-right: 15px; text-align: left;">
+                            <span
+                                style="font-size: 0.85rem; color: #6c757d; font-weight: 400; line-height: 1.2;">Available
+                                on</span>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <span id="brandDomainDisplay"
+                                    style="font-size: 1.1rem; font-weight: 600; color: #0d6efd;"></span>
+                                <i class="fas fa-external-link-alt"
+                                    style="font-size: 0.8rem; color: #0d6efd; opacity: 0.8;"></i>
+                            </div>
+                        </div>
+
                         <div class="rating-container">
                             <div class="star-row">
                                 <span class="rating-score">4.8</span>
@@ -660,11 +747,11 @@
                                 <i class="fas fa-star"></i>
                             </div>
                             <div class="rating-text">
-                                <p style="font-size:14px; margin:0;">Ratings on Zazzle</p>
-                                <h6 style="font-size:16px; margin:0;" class="review-count">27k+ reviews</h6>
+                                <h6 style="font-size:14px; margin:0;" class="review-count">27k+ reviews</h6>
                             </div>
                         </div>
                     </a>
+
 
                     <!-- Desktop Title -->
                     <h1 id="heroTitle" class="hero-title d-none d-md-block">Custom 2026 Vision Board Poster</h1>
@@ -848,7 +935,7 @@
             }
         };
 
-   
+
         function switchFormat(format) {
             const desc = document.getElementById('formatDesc');
             const clarityContainer = document.querySelector('.clarity-feature');
@@ -1064,7 +1151,7 @@
             }
         }, { passive: false });
 
-   
+
         function initVersion() {
             const urlParams = new URLSearchParams(window.location.search);
             const d = urlParams.get('d') || "1";
@@ -1077,7 +1164,7 @@
             // 1. Setup Slider Images
             currentMockups = currentData.images || [];
             currentSlideIndex = 0;
-            sliderTrack.innerHTML = currentMockups.map(src => 
+            sliderTrack.innerHTML = currentMockups.map(src =>
                 `<img src="${src}" alt="Vision Board Preview" class="img-fluid" onclick="openImageView('${src}')" style="cursor: zoom-in;">`
             ).join('');
 
@@ -1088,51 +1175,53 @@
             heroCTA.href = currentData.redirectUrl;
             trustLink.href = currentData.redirectUrl;
 
-            // 3. Platform Name Extraction for Branding
+            // 3. Platform & Domain Extraction for Branding
+            let fullDomain = "Store.com";
+            let platformName = "Store";
             try {
                 const urlObj = new URL(currentData.redirectUrl);
-                const domain = urlObj.hostname.replace('www.', '').split('.')[0];
-                platformName = domain.charAt(0).toUpperCase() + domain.slice(1);
+                let hostname = urlObj.hostname.replace('www.', '');
+                fullDomain = hostname.charAt(0).toUpperCase() + hostname.slice(1);
+                platformName = hostname.split('.')[0].charAt(0).toUpperCase() + hostname.split('.')[0].slice(1);
             } catch (e) {
+                fullDomain = "Zazzle.com";
                 platformName = "Zazzle";
             }
 
-            // 4. Single Option Badge Logic (Left on Desktop, Center on Mobile)
-            const digitalBtn = document.getElementById('opt-digital');
-            const physicalBtn = document.getElementById('opt-physical');
-            const switcherContainer = document.querySelector('.format-switcher');
+            // Update the Trust Badge Text UI
+            const brandDomainDisplay = document.getElementById('brandDomainDisplay');
+            if (brandDomainDisplay) brandDomainDisplay.innerText = fullDomain;
 
-            // Set availability based on your design logic (assuming both exist for now)
-            const digitalAvailable = true; 
-            const physicalAvailable = true; 
+            // 4. Single Option Badge Logic & Alignment
+            const switcherContainer = document.querySelector('.format-switcher');
+            const digitalAvailable = true;
+            const physicalAvailable = true;
 
             if (digitalAvailable !== physicalAvailable) {
                 const icon = digitalAvailable ? 'fa-download' : 'fa-truck';
                 const label = digitalAvailable ? 'Instant Digital' : 'Physical Poster';
-                
+
                 if (switcherContainer) {
                     switcherContainer.innerHTML = `
-                        <div class="format-badge" style="background: #ffffff; border: 1px solid #dee2e6; color: #495057; 
-                            padding: 10px 24px; border-radius: 100px; font-weight: 700; font-size: 0.95rem; 
-                            display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); 
-                            width: fit-content; cursor: default;">
-                            <i class="fas ${icon}" style="color: #0d6efd;"></i>
-                            ${label}
-                        </div>
-                    `;
+                <div class="format-badge" id="availabilityBadge">
+                    <i class="fas ${icon}" style="color: #0d6efd;"></i>
+                    ${label}
+                </div>
+            `;
 
                     const updateAlignment = () => {
+                        const badge = document.getElementById('availabilityBadge');
+                        if (!badge) return;
                         if (window.innerWidth <= 767.98) {
                             switcherContainer.style.justifyContent = "center";
-                            switcherContainer.querySelector('.format-badge').style.margin = "0 auto";
+                            badge.style.margin = "0 auto";
                         } else {
                             switcherContainer.style.justifyContent = "flex-start";
-                            switcherContainer.querySelector('.format-badge').style.margin = "0";
+                            badge.style.margin = "0";
                         }
                     };
                     updateAlignment();
                     window.addEventListener('resize', updateAlignment);
-                    switcherContainer.style.display = "flex";
                 }
             }
 
@@ -1147,26 +1236,26 @@
                     const item = designSet[vKey];
                     const targetUrl = `?d=${d}${vKey === '1' ? '' : '&v=' + vKey}`;
                     return `
-                        <div class="col-12 col-md-4">
-                            <div class="card-container">
-                                <a href="${targetUrl}" class="img-wrapper d-block text-decoration-none">
-                                    <img src="${item.images[0]}" alt="Example ${vKey}" class="card-img">
-                                </a>
-                                <div class="mt-auto pt-3 d-flex justify-content-end">
-                                    <a href="${item.redirectUrl}" target="_blank" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
-                                        Shop on ${platformName}
-                                    </a>
-                                </div>
-                            </div>
+                <div class="col-12 col-md-4">
+                    <div class="card-container">
+                        <a href="${targetUrl}" class="img-wrapper d-block text-decoration-none">
+                            <img src="${item.images[0]}" alt="Example ${vKey}" class="card-img">
+                        </a>
+                        <div class="mt-auto pt-3 d-flex justify-content-end">
+                            <a href="${item.redirectUrl}" target="_blank" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
+                                Shop on ${platformName}
+                            </a>
                         </div>
-                    `;
+                    </div>
+                </div>
+            `;
                 }).join('');
             }
 
-            // 6. Render More Templates Grid
+            // 6. Render More Templates Grid (Full Version)
             const otherDesigns = Object.keys(visionBoardData).filter(key => key !== d);
             const templatesSect = document.getElementById('templatesSection');
-            const templatesGrid = document.getElementById('templatesGrid');
+            const templatesGridEl = document.getElementById('templatesGrid');
             const sectionDivider = document.getElementById('sectionDivider');
 
             if (otherDesigns.length === 0) {
@@ -1175,26 +1264,26 @@
             } else {
                 if (templatesSect) templatesSect.style.display = 'block';
                 if (sectionDivider) sectionDivider.style.display = 'block';
-                templatesGrid.innerHTML = otherDesigns.map(dKey => {
+                templatesGridEl.innerHTML = otherDesigns.map(dKey => {
                     const firstItem = visionBoardData[dKey]["1"];
                     const targetUrl = `?d=${dKey}`;
                     return `
-                        <div class="col-12 col-md-4">
-                            <div class="card-container">
-                                <a href="${targetUrl}" class="img-wrapper d-block text-decoration-none">
-                                    <img src="${firstItem.images[0]}" alt="Design ${dKey}" class="card-img">
+                <div class="col-12 col-md-4">
+                    <div class="card-container">
+                        <a href="${targetUrl}" class="img-wrapper d-block text-decoration-none">
+                            <img src="${firstItem.images[0]}" alt="Design ${dKey}" class="card-img">
+                        </a>
+                        <div class="mt-auto pt-3">
+                            <p class="text-uppercase small fw-bold text-secondary mb-2 tracking-wider">Collection ${dKey}</p>
+                            <div class="d-flex justify-content-end">
+                                <a href="${firstItem.redirectUrl}" target="_blank" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
+                                    Shop on ${platformName}
                                 </a>
-                                <div class="mt-auto pt-3">
-                                    <p class="text-uppercase small fw-bold text-secondary mb-2 tracking-wider">Collection ${dKey}</p>
-                                    <div class="d-flex justify-content-end">
-                                        <a href="${firstItem.redirectUrl}" target="_blank" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
-                                            Shop on ${platformName}
-                                        </a>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                    `;
+                    </div>
+                </div>
+            `;
                 }).join('');
             }
 
@@ -1206,8 +1295,6 @@
             }
         }
 
-
-        
         btnZoomIn.onclick = (e) => {
             e.stopPropagation();
             if (currentScale < 5) {
