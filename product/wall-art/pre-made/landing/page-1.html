@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
     <title>Pre-made Wall Art Landing</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -13,7 +12,7 @@
     <script src="../../../../loader.js" defer></script>
     <link rel="stylesheet" href="../../../../footer.css">
     <script src="../../../../footer.js" defer></script>
-    <style> 
+    <style>
         /* Base Styles */
         html,
         body {
@@ -697,11 +696,12 @@
                         <h1 class="hero-title d-none d-md-block"></h1>
 
                         <div class="format-switcher">
-                            <div class="format-option active" id="opt-digital" onclick="switchFormat('digital')">
-                                <i class="fas fa-download"></i> Instant Digital
-                            </div>
-                            <div class="format-option" id="opt-physical" onclick="switchFormat('physical')">
+
+                            <div class="format-option active" id="opt-physical" onclick="switchFormat('physical')">
                                 <i class="fa-solid fa-truck"></i> Physical Poster
+                            </div>
+                            <div class="format-option " id="opt-digital" onclick="switchFormat('digital')">
+                                <i class="fas fa-download"></i> Instant Digital
                             </div>
                         </div>
 
@@ -769,7 +769,7 @@
         </div>
     </div>
 
-    <script src="../../../../nav.js"></script>
+    <script src="../../../../../nav.js"></script>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
@@ -977,7 +977,8 @@
                 formats.digital.link = designData.digital_link || ctaUrl;
                 formats.physical.link = designData.physical_link || ctaUrl;
 
-                let initialType = (digitalAvailable && !physicalAvailable) ? 'digital' :
+                let initialType = (physicalAvailable) ? 'physical' : 'digital'
+                    (digitalAvailable && !physicalAvailable) ? 'digital' :
                     (!digitalAvailable && physicalAvailable) ? 'physical' :
                         (urlParams.get('type') === 'physical') ? 'physical' : 'digital';
 
@@ -1027,7 +1028,7 @@
             const priceContainer = document.getElementById('priceValueContainer');
             const floatingCTA = document.getElementById('floatingCTA');
 
-            // Toggle active classes for switcher buttons (if they exist)
+            // Toggle active classes
             const optDigital = document.getElementById('opt-digital');
             const optPhysical = document.getElementById('opt-physical');
             if (optDigital) optDigital.classList.toggle('active', type === 'digital');
@@ -1035,24 +1036,40 @@
 
             if (desc) desc.innerHTML = data.desc;
 
-            // Update Checklist Feature
+            // --- Updated Checklist Logic ---
             if (clarityContainer) {
-                const sizeText = type === 'digital' ? 'Multiple Sizes Available' : 'Multiple Sizes & Frames Available';
+                const isDigital = type === 'digital';
+                const sizeText = isDigital ? 'Multiple Sizes Available' : 'Multiple Sizes & Frames Available';
+                const priceDependsText = 'Price depends on Size & Frame';
+
                 clarityContainer.style.display = 'flex';
                 clarityContainer.style.flexDirection = 'column';
                 clarityContainer.style.alignItems = 'flex-start';
                 clarityContainer.style.gap = '8px';
 
-                clarityContainer.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <i class="fas fa-circle-check" style="color: #198754;"></i>
-                <p class="clarity-text" style="margin: 0;">${data.clarity}</p>
-            </div>
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <i class="fas fa-circle-check" style="color: #198754;"></i>
-                <p style="font-size: 1.1rem; font-weight: 700; color: #1a1a1a; margin: 0;">${sizeText}</p>
-            </div>`;
+                // Build the list items
+                let listHtml = `
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom:0.07in;">
+            <i class="fas fa-circle-check" style="color: #198754;"></i>
+            <p class="clarity-text" style="margin: 0;">${data.clarity}</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; ${!isDigital ? 'margin-bottom:0.07in;' : ''}">
+            <i class="fas fa-circle-check" style="color: #198754;"></i>
+            <p style="font-size: 1.1rem; font-weight: 700; color: #1a1a1a; margin: 0;">${sizeText}</p>
+        </div>`;
+
+                // Only add the third point if it is NOT digital
+                if (!isDigital) {
+                    listHtml += `
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fas fa-circle-check" style="color: #198754;"></i>
+            <p style="font-size: 1.1rem; font-weight: 700; color: #1a1a1a; margin: 0;">${priceDependsText}</p>
+        </div>`;
+                }
+
+                clarityContainer.innerHTML = listHtml;
             }
+
 
             // Update Process Steps
             if (stepsContainer) {
@@ -1065,12 +1082,11 @@
         `).join('');
             }
 
-            // Update CTA Buttons
+            // Update CTA and Price
             const label = `Shop on ${platformText}`;
             if (heroCTA) { heroCTA.innerText = label; heroCTA.href = data.link; }
             if (floatingCTA) { floatingCTA.innerText = label; floatingCTA.href = data.link; }
 
-            // Update Price
             if (priceContainer) {
                 if (data.price) {
                     priceContainer.style.display = 'block';

@@ -11,7 +11,7 @@
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style> 
+    <style>
         /* Base Styles */
         html,
         body {
@@ -758,18 +758,16 @@
 
                     <!-- FORMAT SWITCHER -->
                     <div class="format-switcher">
-                        <div class="format-option active" id="opt-digital" onclick="switchFormat('digital')">
-                            <i class="fas fa-download"></i> Instant Digital
-                        </div>
-                        <div class="format-option" id="opt-physical" onclick="switchFormat('physical')">
-                            <i class="fa-solid fa-truck"></i> Physical Poster
+                        <div class="format-badge" id="availabilityBadge">
+                            <i class="fa-solid fa-truck" style="color: #0d6efd;"></i>
+                            Physical Poster
                         </div>
                     </div>
 
                     <!-- Description (Dynamic) -->
                     <p class="hero-text" id="formatDesc">
-                        Customize images, text, and colors online in minutes.
-                        <strong>Order & get your poster delivered to your door.</strong>
+                        <strong>Customize images, text, and colors online in minutes.</strong>
+                        Order & get your poster delivered to your door.
                     </p>
 
                     <!-- Process Steps (Dynamic) -->
@@ -797,15 +795,12 @@
                     </div>
 
                     <!-- Actions -->
-                    <div class="hero-actions">
+                    <div class="hero-actions mb-4">
                         <a id="heroCTA" href="#" target="_blank" class="cta-button">
                             Edit & Order Now
                         </a>
 
-                        <div class="price-display w-100">
-                            <p id="priceValueContainer">Start from <span class="price-value" id="priceValue">$2.68
-                                    USD</span></p>
-                        </div>
+
 
 
                     </div>
@@ -936,30 +931,21 @@
         };
 
 
-        function switchFormat(format) {
+
+        function switchFormat() {
             const desc = document.getElementById('formatDesc');
             const clarityContainer = document.querySelector('.clarity-feature');
             const cta = document.getElementById('heroCTA');
-            const priceLabel = document.getElementById('priceLabel');
             const priceContainer = document.getElementById('priceValueContainer');
-            const steps = document.getElementById('processStepsContainer');
 
-            // Extraction of platform name (e.g., Zazzle) from current URL
-            let platformName = "Zazzle"; // Default
+            let platformName = "Zazzle";
             try {
-                const url = new URL(heroCTA.href);
+                const url = new URL(cta.href);
                 const domain = url.hostname.replace('www.', '').split('.')[0];
                 platformName = domain.charAt(0).toUpperCase() + domain.slice(1);
             } catch (e) { platformName = "Zazzle"; }
 
-            // Handle Tab Active State (only if both exist)
-            const totalOptions = document.querySelectorAll('.format-option').length;
-            if (totalOptions > 1) {
-                document.getElementById('opt-digital').classList.toggle('active', format === 'digital');
-                document.getElementById('opt-physical').classList.toggle('active', format === 'physical');
-            }
-
-            // Update Checklist Clarity Feature
+            // Updated Checklist with 3 Points
             if (clarityContainer) {
                 clarityContainer.style.display = 'flex';
                 clarityContainer.style.flexDirection = 'column';
@@ -967,48 +953,25 @@
                 clarityContainer.style.gap = '10px';
                 clarityContainer.style.padding = '1.25rem 1.5rem';
 
-                const mainText = format === 'digital' ? 'High Quality PDF File' : 'Physical Poster Delivery';
-                const subText = format === 'digital' ? 'Multiple Sizes Available' : 'Multiple Sizes & Frames Available';
-
                 clarityContainer.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <i class="fas fa-circle-check" style="color: #198754;"></i>
-                        <p class="clarity-text" style="margin: 0;">${mainText}</p>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <i class="fas fa-circle-check" style="color: #198754;"></i>
-                        <p style="font-size: 1.1rem; font-weight: 700; color: #1a1a1a; margin: 0;">${subText}</p>
-                    </div>
-                `;
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom:0.2in;">
+                <i class="fas fa-circle-check" style="color: #198754;"></i>
+                <p class="clarity-text" style="margin: 0;">Physical Poster Delivery</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-circle-check" style="color: #198754;"></i>
+                <p style="font-size: 1.1rem; font-weight: 700; color: #1a1a1a; margin: 0;">Multiple Sizes & Frames Available</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-circle-check" style="color: #198754;"></i>
+                <p style="font-size: 1.1rem; font-weight: 700; color: #1a1a1a; margin: 0;">Price depends on size & frame</p>
+            </div>
+        `;
             }
 
-            if (format === 'digital') {
-                desc.innerHTML = `Customize images, text, and colors online in minutes. <strong>No Shipping. No Waiting.</strong>`;
-                cta.innerText = `Shop on ${platformName}`;
-                priceLabel.style.display = 'none'; // Subtext moved to checklist
-                priceContainer.innerHTML = `Start from <span class="price-value" id="priceValue">$4.25 USD</span>`;
+            desc.innerHTML = `Customize images, text, and colors online in minutes. <strong>Order & get your poster delivered to your door.</strong>`;
+            cta.innerText = `Shop on ${platformName}`;
 
-                steps.innerHTML = `
-                    <div class="step-item"><div class="step-icon"><i class="fas fa-magic"></i></div><span class="step-label">Edit</span></div>
-                    <i class="fas fa-chevron-right step-arrow"></i>
-                    <div class="step-item"><div class="step-icon"><i class="fas fa-file-export"></i></div><span class="step-label">Download</span></div>
-                    <i class="fas fa-chevron-right step-arrow"></i>
-                    <div class="step-item"><div class="step-icon"><i class="fas fa-print"></i></div><span class="step-label">Print</span></div>
-                `;
-            } else {
-                desc.innerHTML = `Customize images, text, and colors online in minutes. <strong>Order & get your poster delivered to your door.</strong>`;
-                cta.innerText = `Shop on ${platformName}`;
-                priceLabel.style.display = 'none'; // Subtext moved to checklist
-                priceContainer.innerHTML = `Start from <span class="price-value" id="priceValue">$2.68 USD</span>`;
-
-                steps.innerHTML = `
-                    <div class="step-item"><div class="step-icon"><i class="fas fa-paintbrush"></i></div><span class="step-label">Edit</span></div>
-                    <i class="fas fa-chevron-right step-arrow"></i>
-                    <div class="step-item"><div class="step-icon"><i class="fas fa-shopping-basket"></i></div><span class="step-label">Order</span></div>
-                    <i class="fas fa-chevron-right step-arrow"></i>
-                    <div class="step-item"><div class="step-icon"><i class="fas fa-truck-fast"></i></div><span class="step-label">Shipped</span></div>
-                `;
-            }
         }
 
 
@@ -1152,11 +1115,11 @@
         }, { passive: false });
 
 
+
         function initVersion() {
             const urlParams = new URLSearchParams(window.location.search);
             const d = urlParams.get('d') || "1";
             const v = urlParams.get('v') || "1";
-            const typeParam = urlParams.get('type');
 
             const designSet = visionBoardData[d] || visionBoardData["1"];
             const currentData = designSet[v] || designSet["1"];
@@ -1175,9 +1138,9 @@
             heroCTA.href = currentData.redirectUrl;
             trustLink.href = currentData.redirectUrl;
 
-            // 3. Platform & Domain Extraction for Branding
-            let fullDomain = "Store.com";
-            let platformName = "Store";
+            // 3. Platform & Domain Extraction
+            let fullDomain = "Zazzle.com";
+            let platformName = "Zazzle";
             try {
                 const urlObj = new URL(currentData.redirectUrl);
                 let hostname = urlObj.hostname.replace('www.', '');
@@ -1188,44 +1151,40 @@
                 platformName = "Zazzle";
             }
 
-            // Update the Trust Badge Text UI
             const brandDomainDisplay = document.getElementById('brandDomainDisplay');
             if (brandDomainDisplay) brandDomainDisplay.innerText = fullDomain;
 
-            // 4. Single Option Badge Logic & Alignment
-            const switcherContainer = document.querySelector('.format-switcher');
-            const digitalAvailable = true;
-            const physicalAvailable = true;
+            // 4. Update Checklist (3 Points: Physical, Sizes/Frames, Price Note)
+            const clarityContainer = document.querySelector('.clarity-feature');
+            if (clarityContainer) {
+                clarityContainer.style.display = 'flex';
+                clarityContainer.style.flexDirection = 'column';
+                clarityContainer.style.alignItems = 'flex-start';
+                clarityContainer.style.gap = '10px';
+                clarityContainer.style.padding = '1.25rem 1.5rem';
 
-            if (digitalAvailable !== physicalAvailable) {
-                const icon = digitalAvailable ? 'fa-download' : 'fa-truck';
-                const label = digitalAvailable ? 'Instant Digital' : 'Physical Poster';
-
-                if (switcherContainer) {
-                    switcherContainer.innerHTML = `
-                <div class="format-badge" id="availabilityBadge">
-                    <i class="fas ${icon}" style="color: #0d6efd;"></i>
-                    ${label}
-                </div>
-            `;
-
-                    const updateAlignment = () => {
-                        const badge = document.getElementById('availabilityBadge');
-                        if (!badge) return;
-                        if (window.innerWidth <= 767.98) {
-                            switcherContainer.style.justifyContent = "center";
-                            badge.style.margin = "0 auto";
-                        } else {
-                            switcherContainer.style.justifyContent = "flex-start";
-                            badge.style.margin = "0";
-                        }
-                    };
-                    updateAlignment();
-                    window.addEventListener('resize', updateAlignment);
-                }
+                clarityContainer.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom:0.07in;">
+                <i class="fas fa-circle-check" style="color: #198754;"></i>
+                <p class="clarity-text" style="margin: 0;">Physical Poster Delivery</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom:0.07in;">
+                <i class="fas fa-circle-check" style="color: #198754;"></i>
+                <p style="font-size: 1.1rem; font-weight: 700; color: #1a1a1a; margin: 0;">Multiple Sizes & Frames Available</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-circle-check" style="color: #198754;"></i>
+                <p style="font-size: 1.1rem; font-weight: 700; color: #1a1a1a; margin: 0;">Price depends on size & frame</p>
+            </div>
+        `;
             }
 
-            // 5. Render Examples Grid
+            // 5. Update CTA and Price Text
+            heroCTA.innerText = `Shop on ${platformName}`;
+            const priceValue = document.getElementById('priceValue');
+
+
+            // 6. Render Examples Grid
             const versionsToShow = Object.keys(designSet).filter(key => key !== v);
             const examplesSection = document.getElementById('examplesSection');
             if (versionsToShow.length === 0) {
@@ -1247,30 +1206,23 @@
                             </a>
                         </div>
                     </div>
-                </div>
-            `;
+                </div>`;
                 }).join('');
             }
 
-            // 6. Render More Templates Grid (Full Version)
+            // 7. Render More Templates Grid
             const otherDesigns = Object.keys(visionBoardData).filter(key => key !== d);
             const templatesSect = document.getElementById('templatesSection');
-            const templatesGridEl = document.getElementById('templatesGrid');
-            const sectionDivider = document.getElementById('sectionDivider');
-
             if (otherDesigns.length === 0) {
                 if (templatesSect) templatesSect.style.display = 'none';
-                if (sectionDivider) sectionDivider.style.display = 'none';
             } else {
                 if (templatesSect) templatesSect.style.display = 'block';
-                if (sectionDivider) sectionDivider.style.display = 'block';
-                templatesGridEl.innerHTML = otherDesigns.map(dKey => {
+                templatesGrid.innerHTML = otherDesigns.map(dKey => {
                     const firstItem = visionBoardData[dKey]["1"];
-                    const targetUrl = `?d=${dKey}`;
                     return `
                 <div class="col-12 col-md-4">
                     <div class="card-container">
-                        <a href="${targetUrl}" class="img-wrapper d-block text-decoration-none">
+                        <a href="?d=${dKey}" class="img-wrapper d-block text-decoration-none">
                             <img src="${firstItem.images[0]}" alt="Design ${dKey}" class="card-img">
                         </a>
                         <div class="mt-auto pt-3">
@@ -1282,18 +1234,12 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            `;
+                </div>`;
                 }).join('');
             }
-
-            // 7. Initial Format Load
-            if (typeParam && typeParam.toLowerCase() === 'physical') {
-                switchFormat('physical');
-            } else {
-                switchFormat('digital');
-            }
         }
+
+
 
         btnZoomIn.onclick = (e) => {
             e.stopPropagation();
